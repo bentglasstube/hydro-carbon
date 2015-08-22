@@ -20,10 +20,10 @@ Map::Map(Graphics& graphics) {
       tiles[y][x] = Map::LAND;
     }
 
-    if (x % 2 == 0) {
+    if (x % 2 == 1) {
       int d = rand() % 4;
-      if (d == 1) cy--;
-      if (d == 2) cy++;
+      if (d == 0) cy--;
+      if (d == 1) cy++;
 
       if (cy < 2) cy = 2;
       if (cy > 7) cy = 7;
