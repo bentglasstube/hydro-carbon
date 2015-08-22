@@ -39,6 +39,6 @@ class GameScreen : public Screen {
     boost::shared_ptr<Text> text;
     boost::shared_ptr<MultiSprite> hud;
 
-    unsigned int damage;
+    unsigned int damage, whales, fish;
     int pr, spawn_timer;
 };

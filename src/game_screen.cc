@@ -6,12 +6,14 @@
 #include "barrel.h"
 #include "boat.h"
 #include "fish.h"
+#include "game_over_screen.h"
 #include "input.h"
 #include "whale.h"
 
 namespace {
   const int starting_pr = 63999;
-  const int spawn_interval = 15000;
+  // const int spawn_interval = 15000;
+  const int spawn_interval = 10;
 
   const unsigned int hud_barrel = 8;
   const unsigned int hud_lawyer = 9;
@@ -27,11 +29,12 @@ void GameScreen::init(Graphics& graphics) {
   text.reset(new Text(graphics));
   hud.reset(new MultiSprite(graphics, "ui", 0, 0, 16, 16, 4, 3));
 
-  damage = 0;
+  damage = whales = fish = 0;
   pr = starting_pr;
 
   spawn_timer = spawn_interval;
 
+  // TODO consider removing
   spawn_boat(graphics);
   spawn_boat(graphics);
 }
@@ -92,6 +95,12 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
       boost::shared_ptr<Barrel> barrel = boost::dynamic_pointer_cast<Barrel>(obj);
       if (barrel) tanker->add_barrel();
 
+      boost::shared_ptr<Whale> whale = boost::dynamic_pointer_cast<Whale>(obj);
+      if (whale) this->whales++;
+
+      boost::shared_ptr<Fish> fish = boost::dynamic_pointer_cast<Fish>(obj);
+      if (fish) this->fish++;
+
       objects.erase(i);
     } else {
       ++i;
@@ -109,7 +118,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     // TODO particles
   }
 
-  return true;
+  return pr > 0;
 }
 
 void GameScreen::draw(Graphics& graphics) {
@@ -134,7 +143,9 @@ void GameScreen::draw(Graphics& graphics) {
 }
 
 Screen* GameScreen::next_screen() {
-  return NULL;
+  GameOverScreen* screen = new GameOverScreen();
+  screen->set_scores(damage, whales, fish);
+  return screen;
 }
 
 std::string GameScreen::get_music_track() {
