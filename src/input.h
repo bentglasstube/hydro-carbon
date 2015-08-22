@@ -16,6 +16,8 @@ class Input {
     bool key_released(SDL_Keycode key) { return released[key]; }
     bool key_held(SDL_Keycode key) { return held[key]; }
 
+    bool key_pressed_or_held(SDL_Keycode key) { return pressed[key] || held[key]; }
+
     bool any_pressed() { return pressed.size() > 0; }
 
   private:

@@ -2,11 +2,11 @@
 
 #include <boost/scoped_ptr.hpp>
 
+#include "map.h"
 #include "screen.h"
+#include "tanker.h"
 
-class Text;
-
-class TitleScreen : public Screen {
+class GameScreen : public Screen {
   public:
 
     void init(Graphics& graphics);
@@ -14,9 +14,10 @@ class TitleScreen : public Screen {
     void draw(Graphics& graphics);
 
     Screen* next_screen();
-    std::string get_music_track() { return ""; }
+    std::string get_music_track();
 
   private:
 
-    boost::scoped_ptr<Text> text;
+    boost::scoped_ptr<Map> map;
+    boost::scoped_ptr<Tanker> tanker;
 };

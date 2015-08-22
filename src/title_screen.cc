@@ -1,6 +1,7 @@
 #include "title_screen.h"
 
 #include "audio.h"
+#include "game_screen.h"
 #include "graphics.h"
 #include "input.h"
 #include "text.h"
@@ -15,4 +16,8 @@ bool TitleScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigne
 
 void TitleScreen::draw(Graphics& graphics) {
   text->draw(graphics, 320, 232, "Press any key.", Text::CENTER);
+}
+
+Screen* TitleScreen::next_screen() {
+  return new GameScreen();
 }

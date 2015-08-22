@@ -9,6 +9,9 @@ Sprite::Sprite(Graphics& graphics, const std::string& file, unsigned int x, unsi
   rect.y = y;
   rect.w = w;
   rect.h = h;
+
+  // Force transparency enabled
+  graphics.load_image(file, true);
 }
 
 void Sprite::draw(Graphics& graphics, unsigned int x, unsigned int y) {
