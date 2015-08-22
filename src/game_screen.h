@@ -9,6 +9,7 @@
 #include "screen.h"
 #include "tanker.h"
 #include "text.h"
+#include "whale.h"
 
 class GameScreen : public Screen {
   public:
@@ -23,14 +24,16 @@ class GameScreen : public Screen {
   private:
 
     void spawn_boat(Graphics& graphics);
+    void spawn_whale(Graphics& graphics);
+    void spawn_fish(Graphics& graphics);
 
-    typedef std::vector<boost::shared_ptr<Boat>> BoatSet;
+    typedef std::vector<boost::shared_ptr<WaterObject>> ObjectSet;
 
     boost::shared_ptr<Map> map;
     boost::shared_ptr<Tanker> tanker;
     boost::shared_ptr<Text> text;
-    BoatSet boats;
+    ObjectSet objects;
 
     unsigned int damage;
-    int pr, boat_spawn_timer;
+    int pr, spawn_timer;
 };

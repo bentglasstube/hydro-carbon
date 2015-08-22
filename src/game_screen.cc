@@ -6,7 +6,7 @@
 
 namespace {
   const int starting_pr = 60000;
-  const int boat_spawn_interval = 30000;
+  const int spawn_interval = 30000;
 }
 
 void GameScreen::init(Graphics& graphics) {
@@ -14,7 +14,7 @@ void GameScreen::init(Graphics& graphics) {
   tanker.reset(new Tanker(graphics, 1, 7));
   text.reset(new Text(graphics));
 
-  boats = BoatSet();
+  objects = ObjectSet();
 
   spawn_boat(graphics);
   spawn_boat(graphics);
@@ -22,14 +22,18 @@ void GameScreen::init(Graphics& graphics) {
   damage = 0;
   pr = starting_pr;
 
-  boat_spawn_timer = boat_spawn_interval;
+  spawn_timer = spawn_interval;
 }
 
 bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed) {
-  boat_spawn_timer -= elapsed;
-  if (boat_spawn_timer <= 0) {
-    boat_spawn_timer += boat_spawn_interval;
+  spawn_timer -= elapsed;
+  if (spawn_timer <= 0) {
+    spawn_timer += spawn_interval;
+
+    // TODO spawn a random thing
     spawn_boat(graphics);
+    spawn_whale(graphics);
+    spawn_fish(graphics);
   }
 
   if (!tanker->is_moving()) {
@@ -53,11 +57,12 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
   tanker->update(map, elapsed);
   damage += map->update(elapsed);
 
-  for (BoatSet::iterator i = boats.begin(); i != boats.end(); ++i) {
-    (*i)->update(map, elapsed);
-    if ((*i)->is_cleaning()) {
-      pr -= elapsed;
-    }
+  for (ObjectSet::iterator i = objects.begin(); i != objects.end(); ++i) {
+    boost::shared_ptr<WaterObject> obj = *i;
+    obj->update(map, elapsed);
+
+    boost::shared_ptr<Boat> boat = boost::dynamic_pointer_cast<Boat>(obj);
+    if (boat && map->is_oil(boat->x_pos(), boat->y_pos())) pr -= elapsed;
   }
 
   if (tanker->is_leaking()) damage += map->dump_oil(tanker->x_behind(), tanker->y_behind());
@@ -69,7 +74,7 @@ void GameScreen::draw(Graphics& graphics) {
   map->draw(graphics);
   tanker->draw(graphics);
 
-  for (BoatSet::iterator i = boats.begin(); i != boats.end(); ++i) {
+  for (ObjectSet::iterator i = objects.begin(); i != objects.end(); ++i) {
     (*i)->draw(graphics);
   }
 
@@ -88,15 +93,29 @@ std::string GameScreen::get_music_track() {
 void GameScreen::spawn_boat(Graphics& graphics) {
   switch (rand() % 3) {
     case 0:
-      boats.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 0, rand() % 20 + 10, Boat::RIGHT)));
+      objects.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 0, rand() % 20 + 10, Boat::RIGHT)));
       break;
 
     case 1:
-      boats.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 39, rand() % 20 + 10, Boat::LEFT)));
+      objects.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 39, rand() % 20 + 10, Boat::LEFT)));
       break;
 
     case 2:
-      boats.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 29, rand() % 40, Boat::UP)));
+      objects.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 29, rand() % 40, Boat::UP)));
       break;
   }
+}
+
+void GameScreen::spawn_whale(Graphics& graphics) {
+  unsigned int x = rand() % 40;
+  unsigned int y = rand() % 30;
+
+  if (map->is_water(x, y)) objects.push_back(boost::shared_ptr<Whale>(new Whale(graphics, x, y)));
+}
+
+void GameScreen::spawn_fish(Graphics& graphics) {
+  unsigned int x = rand() % 40;
+  unsigned int y = rand() % 30;
+
+  // if (map->is_water(x, y)) objects.push_back(boost::shared_ptr<Whale>(new Whale(graphics, x, y)));
 }

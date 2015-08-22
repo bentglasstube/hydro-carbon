@@ -22,6 +22,8 @@ class WaterObject {
     unsigned int x_pos() { return x; }
     unsigned int y_pos() { return y; }
 
+    virtual const int value() = 0;
+
   protected:
 
     unsigned int x, y;

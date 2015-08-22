@@ -17,6 +17,8 @@ class Tanker : public WaterObject {
     void draw(Graphics& graphics);
     void start_moving(Direction dir);
 
+    const int value() { return 0; }
+
     void toggle_leaking() { leaking = !leaking; }
     bool is_leaking() { return leaking; }
 

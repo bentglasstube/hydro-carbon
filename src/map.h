@@ -22,6 +22,7 @@ class Map {
 
     bool sailable(unsigned int x, unsigned int y);
     bool is_oil(unsigned int x, unsigned int y);
+    bool is_water(unsigned int x, unsigned int y);
 
   private:
 

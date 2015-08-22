@@ -74,6 +74,12 @@ bool Map::is_oil(unsigned int x, unsigned int y) {
   return tiles[y][x] == Map::OIL;
 }
 
+bool Map::is_water(unsigned int x, unsigned int y) {
+  if (x >= cols) return false;
+  if (y >= rows) return false;
+  return tiles[y][x] == Map::WATER;
+}
+
 void Map::init_sprites(Graphics& graphics) {
   sprites[Map::WATER] = boost::shared_ptr<Sprite>(new Sprite(graphics, "map", 0, 0, 16, 16));
   sprites[Map::OIL] = boost::shared_ptr<Sprite>(new Sprite(graphics, "map", 16, 0, 16, 16));
