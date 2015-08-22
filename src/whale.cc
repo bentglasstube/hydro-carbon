@@ -2,17 +2,20 @@
 
 namespace {
   const int show_interval = 10000;
-  const int show_threshold = 500;
+  const int show_threshold = 1500;
 }
 
 Whale::Whale(Graphics& graphics, unsigned int x, unsigned int y) :
-  WaterObject(x, y, 0.25f), show_timer(1500)
+  WaterObject(x, y, 0.25f), show_timer(show_threshold)
 {
   sprite = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 32, 32, 16, 16));
 }
 
 void Whale::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
   WaterObject::update(map, elapsed);
+
+  show_timer -= elapsed;
+  if (show_timer < 0) show_timer += show_interval;
 
   if (is_moving()) return;
 
@@ -34,13 +37,10 @@ void Whale::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
       if (map->is_water(x + 1, y)) start_moving(RIGHT);
       break;
   }
-
-  show_timer -= elapsed;
-  if (show_timer < 0) show_timer += show_interval;
 }
 
 void Whale::draw(Graphics& graphics) {
-  if (true || show_timer < show_threshold) {
+  if (show_timer < show_threshold) {
     int dx = x * 16;
     int dy = y * 16;
 
