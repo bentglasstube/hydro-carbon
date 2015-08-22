@@ -23,7 +23,15 @@ $(BUILDDIR)/%.o: %.cc
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
+video: game.mkv
+
+game.mkv: game.glc
+	glc-play $< -o - -y 1 |ffmpeg -i - -vcodec libx264 -y $@
+
+game.glc: $(EXECUTABLE)
+	glc-capture -so $@ $<
+
 clean:
 	rm -rf $(BUILDDIR)
 
-.PHONY: all clean run
+.PHONY: all clean run video
