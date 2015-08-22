@@ -7,10 +7,10 @@ namespace {
   const float clean_time = 750.0f;
 }
 
-Boat::Boat(Graphics& graphics, unsigned int x, unsigned int y) :
+Boat::Boat(Graphics& graphics, unsigned int x, unsigned int y, Direction dir) :
   WaterObject(x, y, 2.0f), cleaning_progress(0.0f)
 {
-  facing = static_cast<Direction>(rand() % 4);
+  facing = dir;
 
   sprites[LEFT]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 48, 16, 16, 16));
   sprites[RIGHT] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 32, 16, 16, 16));

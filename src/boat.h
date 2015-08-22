@@ -10,7 +10,7 @@ class Graphics;
 class Boat : public WaterObject {
   public:
 
-    Boat(Graphics& graphics, unsigned int x, unsigned int y);
+    Boat(Graphics& graphics, unsigned int x, unsigned int y, Direction dir);
 
     void update(boost::shared_ptr<Map> map, unsigned int elapsed);
     void draw(Graphics& graphics);

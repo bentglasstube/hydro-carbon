@@ -15,9 +15,9 @@ class Map {
     Map(Graphics& graphics);
 
     void draw(Graphics& graphics);
-    void update(unsigned int elapsed);
+    unsigned int update(unsigned int elapsed);
 
-    void dump_oil(unsigned int x, unsigned int y);
+    unsigned int dump_oil(unsigned int x, unsigned int y);
     void clean(unsigned int x, unsigned int y);
 
     bool sailable(unsigned int x, unsigned int y);
@@ -26,7 +26,7 @@ class Map {
   private:
 
     void init_sprites(Graphics& graphics);
-    void spread_oil(unsigned int elapsed);
+    unsigned int spread_oil(unsigned int elapsed);
 
     enum TileType { WATER, OIL, LAND };
 
