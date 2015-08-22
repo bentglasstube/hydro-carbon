@@ -3,8 +3,12 @@
 #include "graphics.h"
 #include "map.h"
 
+namespace {
+  const float clean_time = 750.0f;
+}
+
 Boat::Boat(Graphics& graphics, unsigned int x, unsigned int y) :
-  WaterObject(x, y, 2.0f)
+  WaterObject(x, y, 2.0f), cleaning_progress(0.0f)
 {
   facing = static_cast<Direction>(rand() % 4);
 
@@ -15,17 +19,29 @@ Boat::Boat(Graphics& graphics, unsigned int x, unsigned int y) :
 }
 
 void Boat::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
-  // TODO check if in oil
-  // TODO check if can see oil
-  // TODO check if can see tanker
+  WaterObject::update(map, elapsed);
 
-  // For now just move randomly
-  if (!is_moving()) {
+  if (is_moving()) return;
+
+  if (map->is_oil(x, y)) {
+    cleaning_progress += elapsed / clean_time;
+    if (cleaning_progress >= 1.0f) {
+      cleaning_progress = 0.0f;
+      map->clean(x, y);
+    }
+  } else {
     Direction d = facing;
-    int r = rand() % 4;
 
-    if (r == 0) d = static_cast<Direction>((d + 3) % 4);
-    if (r == 1) d = static_cast<Direction>((d + 1) % 4);
+    if (facing != RIGHT && map->is_oil(x - 1, y)) d = LEFT;
+    else if (facing != LEFT && map->is_oil(x + 1, y)) d = RIGHT;
+    else if (facing != DOWN && map->is_oil(x, y - 1)) d = UP;
+    else if (facing != UP && map->is_oil(x, y + 1)) d = DOWN;
+    else {
+      int r = rand() % 4;
+
+      if (r == 0) d = static_cast<Direction>((d + 3) % 4);
+      if (r == 1) d = static_cast<Direction>((d + 1) % 4);
+    }
 
     switch (d) {
       case UP:
@@ -45,8 +61,6 @@ void Boat::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
         break;
     }
   }
-
-  WaterObject::update(map, elapsed);
 }
 
 void Boat::draw(Graphics& graphics) {

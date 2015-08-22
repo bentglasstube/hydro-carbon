@@ -15,7 +15,10 @@ class Boat : public WaterObject {
     void update(boost::shared_ptr<Map> map, unsigned int elapsed);
     void draw(Graphics& graphics);
 
+    bool is_cleaning() { return cleaning_progress > 0.0f; }
+
   private:
 
     std::map<Direction, boost::shared_ptr<Sprite>> sprites;
+    float cleaning_progress;
 };

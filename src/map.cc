@@ -50,6 +50,13 @@ void Map::dump_oil(unsigned int x, unsigned int y) {
   if (tiles[y][x] == Map::WATER) tiles[y][x] = Map::OIL;
 }
 
+void Map::clean(unsigned int x, unsigned int y) {
+  if (x >= cols) return;
+  if (y >= rows) return;
+
+  if (tiles[y][x] == Map::OIL) tiles[y][x] = Map::WATER;
+}
+
 bool Map::sailable(unsigned int x, unsigned int y) {
   if (x >= cols) return false;
   if (y >= rows) return false;
