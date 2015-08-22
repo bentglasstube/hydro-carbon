@@ -17,6 +17,8 @@ class Map {
     void draw(Graphics& graphics);
     void update(unsigned int elapsed);
 
+    void dump_oil(unsigned int x, unsigned int y);
+
     bool sailable(unsigned int x, unsigned int y);
 
   private:

@@ -13,7 +13,7 @@ Map::Map(Graphics& graphics) {
 
   tiles = std::vector<std::vector<TileType>>(rows, std::vector<TileType>(cols, Map::WATER));
 
-  // TODO randomly generate map instead maybe
+  // TODO improve this garbage
   int cy = 5;
   for (int x = 0; x < cols; ++x) {
     for (int y = 0; y < cy; ++y) {
@@ -41,6 +41,13 @@ void Map::draw(Graphics& graphics) {
 
 void Map::update(unsigned int elapsed) {
   // TODO figure out chance of spreading fire and oil and shit
+}
+
+void Map::dump_oil(unsigned int x, unsigned int y) {
+  if (x >= cols) return;
+  if (y >= rows) return;
+
+  if (tiles[y][x] == Map::WATER) tiles[y][x] = Map::OIL;
 }
 
 bool Map::sailable(unsigned int x, unsigned int y) {

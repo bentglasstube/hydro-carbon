@@ -22,7 +22,14 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
 
   if (input.key_pressed(SDLK_ESCAPE)) return false;
 
+  if (input.key_pressed(SDLK_SPACE)) {
+    tanker->toggle_leaking();
+  }
+
   tanker->update(elapsed);
+  map->update(elapsed);
+
+  if (tanker->is_leaking()) map->dump_oil(tanker->x_behind(), tanker->y_behind());
 
   return true;
 }

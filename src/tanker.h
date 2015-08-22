@@ -18,10 +18,15 @@ class Tanker {
     void draw(Graphics& graphics);
 
     void start_moving(Motion motion);
+    void toggle_leaking() { leaking = !leaking; }
+
     bool moving() { return current_motion != STILL; }
+    bool is_leaking() { return leaking; }
 
     unsigned int x_pos() { return x; };
     unsigned int y_pos() { return y; };
+    unsigned int x_behind() { return facing == LEFT ? x + 1 : facing == RIGHT ? x - 1 : x; }
+    unsigned int y_behind() { return facing == UP ? y + 1 : facing == DOWN ? y - 1 : y; }
 
   private:
 
