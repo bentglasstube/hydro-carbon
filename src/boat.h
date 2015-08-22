@@ -2,13 +2,10 @@
 
 #include <map>
 
-#include <boost/shared_ptr.hpp>
-
 #include "sprite.h"
 #include "water_obj.h"
 
 class Graphics;
-class Map;
 
 class Boat : public WaterObject {
   public:

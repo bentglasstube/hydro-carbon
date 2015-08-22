@@ -31,7 +31,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     tanker->toggle_leaking();
   }
 
-  tanker->update(elapsed);
+  tanker->update(map, elapsed);
   map->update(elapsed);
 
   for (BoatSet::iterator i = boats.begin(); i != boats.end(); ++i) {

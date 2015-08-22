@@ -2,15 +2,14 @@
 
 #include "graphics.h"
 
-
 WaterObject::WaterObject(unsigned int x, unsigned int y, float speed) :
   x(x), y(y),
   speed(speed), progress(1.0f),
   facing(WaterObject::LEFT) {}
 
-void WaterObject::update(unsigned int elapsed) {
+void WaterObject::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
   if (progress < 1.0f) {
-    progress += speed * elapsed / 1000.0f;
+    progress += speed * elapsed / 1000.0f / (map->is_oil(x, y) ? 2.0f : 1.0f);
 
     if (progress >= 1.0f) {
       switch (facing) {

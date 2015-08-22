@@ -1,5 +1,9 @@
 #pragma once
 
+#include <boost/shared_ptr.hpp>
+
+#include "map.h"
+
 class Graphics;
 
 class WaterObject {
@@ -9,7 +13,7 @@ class WaterObject {
 
     WaterObject(unsigned int x, unsigned int y, float speed);
 
-    void update(unsigned int elapsed);
+    virtual void update(boost::shared_ptr<Map> map, unsigned int elapsed);
     virtual void draw(Graphics& graphics) = 0;
     virtual void start_moving(Direction dir);
 

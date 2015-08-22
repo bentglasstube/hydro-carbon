@@ -46,7 +46,7 @@ void Boat::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
     }
   }
 
-  WaterObject::update(elapsed);
+  WaterObject::update(map, elapsed);
 }
 
 void Boat::draw(Graphics& graphics) {
