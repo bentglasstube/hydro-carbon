@@ -4,10 +4,13 @@
 
 namespace {
   const int leak_duration = 5000;
+  const int boost_duration = 5000;
 }
 
 Tanker::Tanker(Graphics& graphics, unsigned int x, unsigned int y) :
-  WaterObject(x, y, 1.0f), leak_timer(0)
+  WaterObject(x, y, 1.0f),
+  barrels(5), lawyers(0), celebs(0),
+  leak_timer(0), boost_timer(0)
 {
   facing = RIGHT;
 
@@ -20,7 +23,20 @@ Tanker::Tanker(Graphics& graphics, unsigned int x, unsigned int y) :
 void Tanker::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
   WaterObject::update(map, elapsed);
 
-  if (leak_timer > 0) leak_timer -= elapsed;
+  if (leak_timer > 0) {
+    leak_timer -= elapsed;
+    if (leak_timer <= 0) {
+      leak_timer = 0;
+    }
+  }
+
+  if (boost_timer > 0) {
+    boost_timer -= elapsed;
+    if (boost_timer <= 0) {
+      speed /= 3.0f;
+      boost_timer = 0;
+    }
+  }
 }
 
 void Tanker::draw(Graphics& graphics) {
@@ -40,6 +56,9 @@ void Tanker::draw(Graphics& graphics) {
   if (facing == DOWN) dy -= 16;
 
   sprites[facing]->draw(graphics, dx, dy);
+
+  // TODO draw smoke
+  // TODO draw leak
 }
 
 void Tanker::start_moving(Direction dir) {
@@ -52,5 +71,16 @@ void Tanker::start_moving(Direction dir) {
 }
 
 void Tanker::start_leaking() {
-  leak_timer = leak_duration;
+  if (!is_leaking() && barrels > 0) {
+    barrels--;
+    leak_timer = leak_duration;
+  }
+}
+
+void Tanker::boost() {
+  if (!is_boosting() && barrels > 0) {
+    barrels--;
+    boost_timer = boost_duration;
+    speed *= 3;
+  }
 }

@@ -25,6 +25,9 @@ class GameScreen : public Screen {
     void spawn_boat(Graphics& graphics);
     void spawn_whale(Graphics& graphics);
     void spawn_fish(Graphics& graphics);
+    void spawn_barrel(Graphics& graphics);
+
+    void draw_power_up(Graphics& graphics, unsigned int x, unsigned int icon, unsigned int count);
 
     typedef std::vector<boost::shared_ptr<WaterObject>> ObjectSet;
 
@@ -33,7 +36,7 @@ class GameScreen : public Screen {
     ObjectSet objects;
 
     boost::shared_ptr<Text> text;
-    boost::shared_ptr<MultiSprite> face;
+    boost::shared_ptr<MultiSprite> hud;
 
     unsigned int damage;
     int pr, spawn_timer;

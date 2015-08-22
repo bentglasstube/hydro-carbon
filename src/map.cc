@@ -4,11 +4,6 @@
 #include "graphics.h"
 #include "sprite.h"
 
-namespace {
-  const unsigned int rows = 30;
-  const unsigned int cols = 40;
-}
-
 Map::Map(Graphics& graphics) {
   sprites[Map::WATER] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 0, 16, 16, 8));
   sprites[Map::OIL] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 16, 16, 16, 8));
@@ -17,7 +12,7 @@ Map::Map(Graphics& graphics) {
   tiles = std::vector<std::vector<TileType>>(rows, std::vector<TileType>(cols, Map::WATER));
 
   // TODO improve this garbage
-  int cy = 5;
+  int cy = 7;
   for (int x = 0; x < cols; ++x) {
     for (int y = 0; y < cy; ++y) {
       tiles[y][x] = Map::LAND;
@@ -28,14 +23,14 @@ Map::Map(Graphics& graphics) {
       if (d == 0) cy--;
       if (d == 1) cy++;
 
-      if (cy < 2) cy = 2;
-      if (cy > 7) cy = 7;
+      if (cy < 4) cy = 4;
+      if (cy > 9) cy = 9;
     }
   }
 }
 
 void Map::draw(Graphics& graphics) {
-  for (int y = 0; y < rows; ++y) {
+  for (int y = 2; y < rows; ++y) {
     for (int x = 0; x < cols; ++x) {
       sprites[tiles[y][x]]->draw(graphics, 16 * x, 16 * y);
     }

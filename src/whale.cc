@@ -2,22 +2,13 @@
 
 #include "animated_sprite.h"
 
-namespace {
-  const int show_interval = 10000;
-  const int show_threshold = 1280;
-}
-
-Whale::Whale(Graphics& graphics, unsigned int x, unsigned int y) :
-  WaterObject(x, y, 0.25f), show_timer(show_threshold)
-{
-  sprite = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "boats", 32, 32, 16, 16, 10));
+Whale::Whale(Graphics& graphics, unsigned int x, unsigned int y) : WaterObject(x, y, 0.25f) {
+  // 90 frames makes the whale only appear 10% of the time
+  sprite = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "boats", 32, 32, 16, 16, 90));
 }
 
 void Whale::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
   WaterObject::update(map, elapsed);
-
-  show_timer -= elapsed;
-  if (show_timer < 0) show_timer += show_interval;
 
   if (is_moving()) return;
 
@@ -42,19 +33,17 @@ void Whale::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
 }
 
 void Whale::draw(Graphics& graphics) {
-  if (show_timer < show_threshold) {
-    int dx = x * 16;
-    int dy = y * 16;
+  int dx = x * 16;
+  int dy = y * 16;
 
-    if (is_moving()) {
-      switch (facing) {
-        case LEFT: dx -= progress * 16; break;
-        case RIGHT: dx += progress * 16; break;
-        case UP: dy -= progress * 16; break;
-        case DOWN: dy += progress * 16; break;
-      }
+  if (is_moving()) {
+    switch (facing) {
+      case LEFT: dx -= progress * 16; break;
+      case RIGHT: dx += progress * 16; break;
+      case UP: dy -= progress * 16; break;
+      case DOWN: dy += progress * 16; break;
     }
-
-    sprite->draw(graphics, dx, dy);
   }
+
+  sprite->draw(graphics, dx, dy);
 }

@@ -14,6 +14,9 @@ class Map {
 
     Map(Graphics& graphics);
 
+    static const unsigned int rows = 30;
+    static const unsigned int cols = 40;
+
     void draw(Graphics& graphics);
     unsigned int update(unsigned int elapsed);
 
