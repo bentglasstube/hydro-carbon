@@ -5,7 +5,7 @@ class Graphics;
 class WaterObject {
   public:
 
-    enum Direction { LEFT, RIGHT, UP, DOWN };
+    enum Direction { UP, LEFT, DOWN, RIGHT };
 
     WaterObject(unsigned int x, unsigned int y, float speed);
 

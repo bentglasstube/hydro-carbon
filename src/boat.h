@@ -8,12 +8,14 @@
 #include "water_obj.h"
 
 class Graphics;
+class Map;
 
 class Boat : public WaterObject {
   public:
 
     Boat(Graphics& graphics, unsigned int x, unsigned int y);
 
+    void update(boost::shared_ptr<Map> map, unsigned int elapsed);
     void draw(Graphics& graphics);
 
   private:

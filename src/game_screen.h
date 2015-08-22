@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "boat.h"
@@ -24,7 +23,7 @@ class GameScreen : public Screen {
 
     typedef std::vector<boost::shared_ptr<Boat>> BoatSet;
 
-    boost::scoped_ptr<Map> map;
-    boost::scoped_ptr<Tanker> tanker;
+    boost::shared_ptr<Map> map;
+    boost::shared_ptr<Tanker> tanker;
     BoatSet boats;
 };

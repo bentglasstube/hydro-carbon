@@ -20,6 +20,7 @@ class Map {
     void dump_oil(unsigned int x, unsigned int y);
 
     bool sailable(unsigned int x, unsigned int y);
+    bool is_oil(unsigned int x, unsigned int y);
 
   private:
 

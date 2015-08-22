@@ -35,7 +35,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
   map->update(elapsed);
 
   for (BoatSet::iterator i = boats.begin(); i != boats.end(); ++i) {
-    (*i)->update(elapsed);
+    (*i)->update(map, elapsed);
   }
 
   if (tanker->is_leaking()) map->dump_oil(tanker->x_behind(), tanker->y_behind());
