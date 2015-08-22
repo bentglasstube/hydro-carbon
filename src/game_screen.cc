@@ -30,10 +30,10 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
   if (spawn_timer <= 0) {
     spawn_timer += spawn_interval;
 
-    // TODO spawn a random thing
-    spawn_boat(graphics);
-    spawn_whale(graphics);
-    spawn_fish(graphics);
+    int r = rand() % 16;
+    if (r < 1) spawn_whale(graphics);
+    else if (r < 6) spawn_fish(graphics);
+    else spawn_boat(graphics);
   }
 
   if (!tanker->is_moving()) {
