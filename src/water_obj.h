@@ -7,7 +7,7 @@ class WaterObject {
 
     enum Direction { LEFT, RIGHT, UP, DOWN };
 
-    WaterObject(Graphics& graphics, unsigned int x, unsigned int y, float speed);
+    WaterObject(unsigned int x, unsigned int y, float speed);
 
     void update(unsigned int elapsed);
     virtual void draw(Graphics& graphics) = 0;

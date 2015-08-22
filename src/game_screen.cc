@@ -5,6 +5,11 @@
 void GameScreen::init(Graphics& graphics) {
   map.reset(new Map(graphics));
   tanker.reset(new Tanker(graphics, 1, 7));
+
+  boats = BoatSet();
+
+  boats.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 10, 20)));
+  boats.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 30, 20)));
 }
 
 bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed) {
@@ -29,6 +34,10 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
   tanker->update(elapsed);
   map->update(elapsed);
 
+  for (BoatSet::iterator i = boats.begin(); i != boats.end(); ++i) {
+    (*i)->update(elapsed);
+  }
+
   if (tanker->is_leaking()) map->dump_oil(tanker->x_behind(), tanker->y_behind());
 
   return true;
@@ -37,6 +46,10 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
 void GameScreen::draw(Graphics& graphics) {
   map->draw(graphics);
   tanker->draw(graphics);
+
+  for (BoatSet::iterator i = boats.begin(); i != boats.end(); ++i) {
+    (*i)->draw(graphics);
+  }
 }
 
 Screen* GameScreen::next_screen() {

@@ -3,10 +3,14 @@
 #include "graphics.h"
 
 Tanker::Tanker(Graphics& graphics, unsigned int x, unsigned int y) :
-  WaterObject(graphics, x, y, 1.0f), leaking(false)
+  WaterObject(x, y, 1.0f), leaking(false)
 {
-  init_sprites(graphics);
   facing = RIGHT;
+
+  sprites[LEFT]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 48, 32, 16));
+  sprites[RIGHT] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 32, 32, 16));
+  sprites[UP]    = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 0, 16, 32));
+  sprites[DOWN]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 16, 0, 16, 32));
 }
 
 void Tanker::draw(Graphics& graphics) {
@@ -35,11 +39,4 @@ void Tanker::start_moving(Direction dir) {
   if (dir == DOWN && facing == UP) return;
 
   WaterObject::start_moving(dir);
-}
-
-void Tanker::init_sprites(Graphics& graphics) {
-  sprites[LEFT]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 48, 32, 16));
-  sprites[RIGHT] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 32, 32, 16));
-  sprites[UP]    = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 0, 16, 32));
-  sprites[DOWN]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 16, 0, 16, 32));
 }

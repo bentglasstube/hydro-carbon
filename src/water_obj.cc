@@ -3,7 +3,7 @@
 #include "graphics.h"
 
 
-WaterObject::WaterObject(Graphics& graphics, unsigned int x, unsigned int y, float speed) :
+WaterObject::WaterObject(unsigned int x, unsigned int y, float speed) :
   x(x), y(y),
   speed(speed), progress(1.0f),
   facing(WaterObject::LEFT) {}

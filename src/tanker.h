@@ -1,7 +1,8 @@
 #pragma once
 
-#include <boost/shared_ptr.hpp>
 #include <map>
+
+#include <boost/shared_ptr.hpp>
 
 #include "sprite.h"
 #include "water_obj.h"
@@ -24,9 +25,6 @@ class Tanker : public WaterObject {
 
   private:
 
-    void init_sprites(Graphics& graphics);
-
     bool leaking;
-
-    std::map<WaterObject::Direction, boost::shared_ptr<Sprite>> sprites;
+    std::map<Direction, boost::shared_ptr<Sprite>> sprites;
 };
