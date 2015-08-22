@@ -3,56 +3,23 @@
 #include "graphics.h"
 
 Tanker::Tanker(Graphics& graphics, unsigned int x, unsigned int y) :
-  x(x), y(y), move_progress(0),
-  current_motion(Tanker::STILL), facing(Tanker::RIGHT),
-  leaking(false)
+  WaterObject(graphics, x, y, 1.0f), leaking(false)
 {
   init_sprites(graphics);
-}
-
-void Tanker::update(unsigned int elapsed) {
-  if (moving()) {
-    move_progress += elapsed;
-
-    if (move_progress >= 160) {
-      switch (current_motion) {
-        case LEFT: x--; break;
-        case RIGHT: x++; break;
-        case UP: y--; break;
-        case DOWN: y++; break;
-        case STILL: break;
-      }
-
-      move_progress = 0;
-      current_motion = STILL;
-    }
-  }
+  facing = RIGHT;
 }
 
 void Tanker::draw(Graphics& graphics) {
   int dx = x * 16;
   int dy = y * 16;
 
-  switch (current_motion) {
-    case LEFT:
-      dx -= move_progress / 10;
-      break;
-
-    case RIGHT:
-      dx += move_progress / 10;
-      break;
-
-    case UP:
-      dy -= move_progress / 10;
-      break;
-
-    case DOWN:
-      dy += move_progress / 10;
-      break;
-
-    case STILL:
-      // do nothing
-      break;
+  if (is_moving()) {
+    switch (facing) {
+      case LEFT: dx -= progress * 16; break;
+      case RIGHT: dx += progress * 16; break;
+      case UP: dy -= progress * 16; break;
+      case DOWN: dy += progress * 16; break;
+    }
   }
 
   if (facing == RIGHT) dx -= 16;
@@ -61,20 +28,18 @@ void Tanker::draw(Graphics& graphics) {
   sprites[facing]->draw(graphics, dx, dy);
 }
 
-void Tanker::start_moving(Motion motion) {
-  if (moving() || motion == Tanker::STILL) return;
+void Tanker::start_moving(Direction dir) {
+  if (dir == LEFT && facing == RIGHT) return;
+  if (dir == RIGHT && facing == LEFT) return;
+  if (dir == UP && facing == DOWN) return;
+  if (dir == DOWN && facing == UP) return;
 
-  if (facing == LEFT && motion == RIGHT) return;
-  if (facing == RIGHT && motion == LEFT) return;
-  if (facing == UP && motion == DOWN) return;
-  if (facing == DOWN && motion == UP) return;
-
-  current_motion = facing = motion;
+  WaterObject::start_moving(dir);
 }
 
 void Tanker::init_sprites(Graphics& graphics) {
-  sprites[Tanker::LEFT] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 48, 32, 16));
-  sprites[Tanker::RIGHT] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 32, 32, 16));
-  sprites[Tanker::UP] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 0, 16, 32));
-  sprites[Tanker::DOWN] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 16, 0, 16, 32));
+  sprites[LEFT]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 48, 32, 16));
+  sprites[RIGHT] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 32, 32, 16));
+  sprites[UP]    = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 0, 16, 32));
+  sprites[DOWN]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 16, 0, 16, 32));
 }

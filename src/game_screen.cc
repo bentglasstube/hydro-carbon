@@ -8,7 +8,7 @@ void GameScreen::init(Graphics& graphics) {
 }
 
 bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed) {
-  if (!tanker->moving()) {
+  if (!tanker->is_moving()) {
     if (input.key_pressed_or_held(SDLK_a)) {
       if (map->sailable(tanker->x_pos() - 1, tanker->y_pos())) tanker->start_moving(Tanker::LEFT);
     } else if (input.key_pressed_or_held(SDLK_d)) {
