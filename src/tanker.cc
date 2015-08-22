@@ -2,6 +2,8 @@
 
 #include "graphics.h"
 
+#include "animated_sprite.h"
+
 namespace {
   const int leak_duration = 5000;
   const int boost_duration = 5000;
@@ -52,13 +54,10 @@ void Tanker::draw(Graphics& graphics) {
     }
   }
 
-  if (facing == RIGHT) dx -= 16;
-  if (facing == DOWN) dy -= 16;
+  if (facing == RIGHT || facing == LEFT) dx -= 8;
+  if (facing == DOWN || facing == UP) dy -= 8;
 
   sprites[facing]->draw(graphics, dx, dy);
-
-  // TODO draw smoke
-  // TODO draw leak
 }
 
 void Tanker::start_moving(Direction dir) {

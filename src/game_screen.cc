@@ -2,6 +2,7 @@
 
 #include <boost/format.hpp>
 
+#include "animated_sprite.h"
 #include "barrel.h"
 #include "boat.h"
 #include "fish.h"
@@ -97,29 +98,39 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     }
   }
 
-  if (tanker->is_leaking()) damage += map->dump_oil(tanker->x_behind(), tanker->y_behind());
+  if (tanker->is_leaking()) {
+    damage += map->dump_oil(tanker->x_pos(), tanker->y_pos());
+    // TODO particles
+  }
+
+  if (tanker->is_boosting()) {
+    // TODO particles
+  } else {
+    // TODO particles
+  }
 
   return true;
 }
 
 void GameScreen::draw(Graphics& graphics) {
   map->draw(graphics);
-  tanker->draw(graphics);
 
   for (ObjectSet::iterator i = objects.begin(); i != objects.end(); ++i) {
     (*i)->draw(graphics);
   }
 
+  tanker->draw(graphics);
+
   draw_power_up(graphics, 16, hud_barrel, tanker->barrel_count());
   draw_power_up(graphics, 112, hud_lawyer, tanker->lawyer_count());
   draw_power_up(graphics, 208, hud_celeb, tanker->celeb_count());
 
-  text->draw(graphics, 608, 16, boost::str(boost::format("Damages $% 9u") % damage), Text::RIGHT);
+  text->draw(graphics, 608, 0, boost::str(boost::format("Damages $% 9u") % damage), Text::RIGHT);
 
   int n = 7 - pr / 8000;
   if (n < 0) n = 0;
   if (n > 7) n = 7;
-  hud->draw(graphics, 624, 16, n);
+  hud->draw(graphics, 624, 0, n);
 }
 
 Screen* GameScreen::next_screen() {
@@ -178,9 +189,9 @@ void GameScreen::spawn_barrel(Graphics& graphics) {
 
 void GameScreen::draw_power_up(Graphics& graphics, unsigned int x, unsigned int icon, unsigned int count) {
   if (count > 5) {
-    hud->draw(graphics, x, 16, icon);
-    text->draw(graphics, x + 16, 16, boost::str(boost::format("x%u") % count));
+    hud->draw(graphics, x, 0, icon);
+    text->draw(graphics, x + 16, 0, boost::str(boost::format("x%u") % count));
   } else {
-    for (int i = 0; i < count; i++) hud->draw(graphics, x + 16 * i, 16, icon);
+    for (int i = 0; i < count; i++) hud->draw(graphics, x + 16 * i, 0, icon);
   }
 }

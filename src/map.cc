@@ -12,7 +12,7 @@ Map::Map(Graphics& graphics) {
   tiles = std::vector<std::vector<TileType>>(rows, std::vector<TileType>(cols, Map::WATER));
 
   // TODO improve this garbage
-  int cy = 7;
+  int cy = 6;
   for (int x = 0; x < cols; ++x) {
     for (int y = 0; y < cy; ++y) {
       tiles[y][x] = Map::LAND;
@@ -23,14 +23,14 @@ Map::Map(Graphics& graphics) {
       if (d == 0) cy--;
       if (d == 1) cy++;
 
-      if (cy < 4) cy = 4;
-      if (cy > 9) cy = 9;
+      if (cy < 3) cy = 3;
+      if (cy > 8) cy = 8;
     }
   }
 }
 
 void Map::draw(Graphics& graphics) {
-  for (int y = 2; y < rows; ++y) {
+  for (int y = 1; y < rows; ++y) {
     for (int x = 0; x < cols; ++x) {
       sprites[tiles[y][x]]->draw(graphics, 16 * x, 16 * y);
     }

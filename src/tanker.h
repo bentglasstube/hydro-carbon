@@ -34,9 +34,6 @@ class Tanker : public WaterObject {
     void add_lawyer() { lawyers++; }
     void add_celeb() { celebs++; }
 
-    unsigned int x_behind() { return facing == LEFT ? x + 1 : facing == RIGHT ? x - 1 : x; }
-    unsigned int y_behind() { return facing == UP ? y + 1 : facing == DOWN ? y - 1 : y; }
-
   private:
 
     unsigned int barrels, lawyers, celebs;

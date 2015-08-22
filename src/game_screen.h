@@ -9,6 +9,7 @@
 #include "screen.h"
 #include "tanker.h"
 #include "text.h"
+#include "water_obj.h"
 
 class GameScreen : public Screen {
   public:
