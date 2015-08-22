@@ -17,6 +17,8 @@ class Map {
     void draw(Graphics& graphics);
     void update(unsigned int elapsed);
 
+    bool sailable(unsigned int x, unsigned int y);
+
   private:
 
     void init_sprites(Graphics& graphics);

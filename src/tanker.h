@@ -20,6 +20,9 @@ class Tanker {
     void start_moving(Motion motion);
     bool moving() { return current_motion != STILL; }
 
+    unsigned int x_pos() { return x; };
+    unsigned int y_pos() { return y; };
+
   private:
 
     void init_sprites(Graphics& graphics);
