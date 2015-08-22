@@ -5,6 +5,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "map.h"
+#include "multi_sprite.h"
 #include "screen.h"
 #include "tanker.h"
 #include "text.h"
@@ -29,8 +30,10 @@ class GameScreen : public Screen {
 
     boost::shared_ptr<Map> map;
     boost::shared_ptr<Tanker> tanker;
-    boost::shared_ptr<Text> text;
     ObjectSet objects;
+
+    boost::shared_ptr<Text> text;
+    boost::shared_ptr<MultiSprite> face;
 
     unsigned int damage;
     int pr, spawn_timer;

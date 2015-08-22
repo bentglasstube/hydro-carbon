@@ -1,5 +1,6 @@
 #include "map.h"
 
+#include "animated_sprite.h"
 #include "graphics.h"
 #include "sprite.h"
 
@@ -9,7 +10,9 @@ namespace {
 }
 
 Map::Map(Graphics& graphics) {
-  init_sprites(graphics);
+  sprites[Map::WATER] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 0, 16, 16, 8));
+  sprites[Map::OIL] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 16, 16, 16, 8));
+  sprites[Map::LAND] = boost::shared_ptr<Sprite>(new Sprite(graphics, "map", 0, 32, 16, 16));
 
   tiles = std::vector<std::vector<TileType>>(rows, std::vector<TileType>(cols, Map::WATER));
 
@@ -81,9 +84,6 @@ bool Map::is_water(unsigned int x, unsigned int y) {
 }
 
 void Map::init_sprites(Graphics& graphics) {
-  sprites[Map::WATER] = boost::shared_ptr<Sprite>(new Sprite(graphics, "map", 0, 0, 16, 16));
-  sprites[Map::OIL] = boost::shared_ptr<Sprite>(new Sprite(graphics, "map", 16, 0, 16, 16));
-  sprites[Map::LAND] = boost::shared_ptr<Sprite>(new Sprite(graphics, "map", 32, 0, 16, 16));
 }
 
 unsigned int Map::spread_oil(unsigned int elapsed) {

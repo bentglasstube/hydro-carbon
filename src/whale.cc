@@ -1,14 +1,16 @@
 #include "whale.h"
 
+#include "animated_sprite.h"
+
 namespace {
   const int show_interval = 10000;
-  const int show_threshold = 1500;
+  const int show_threshold = 1280;
 }
 
 Whale::Whale(Graphics& graphics, unsigned int x, unsigned int y) :
   WaterObject(x, y, 0.25f), show_timer(show_threshold)
 {
-  sprite = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 32, 32, 16, 16));
+  sprite = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "boats", 32, 32, 16, 16, 10));
 }
 
 void Whale::update(boost::shared_ptr<Map> map, unsigned int elapsed) {

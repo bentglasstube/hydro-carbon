@@ -1,5 +1,7 @@
 #include "fish.h"
 
+#include "animated_sprite.h"
+
 namespace {
   const int show_interval = 10000;
   const int show_threshold = 1500;
@@ -8,7 +10,7 @@ namespace {
 Fish::Fish(Graphics& graphics, unsigned int x, unsigned int y) :
   WaterObject(x, y, 0.1f)
 {
-  sprite = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 48, 32, 16, 16));
+  sprite = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "boats", 32, 48, 16, 16, 4));
 }
 
 void Fish::update(boost::shared_ptr<Map> map, unsigned int elapsed) {

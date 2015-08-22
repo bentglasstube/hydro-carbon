@@ -8,24 +8,26 @@
 #include "whale.h"
 
 namespace {
-  const int starting_pr = 60000;
+  const int starting_pr = 63999;
   const int spawn_interval = 10000;
 }
 
 void GameScreen::init(Graphics& graphics) {
   map.reset(new Map(graphics));
   tanker.reset(new Tanker(graphics, 1, 7));
-  text.reset(new Text(graphics));
 
   objects = ObjectSet();
 
-  spawn_boat(graphics);
-  spawn_boat(graphics);
+  text.reset(new Text(graphics));
+  face.reset(new MultiSprite(graphics, "ui", 0, 0, 16, 16, 4, 2));
 
   damage = 0;
   pr = starting_pr;
 
   spawn_timer = spawn_interval;
+
+  spawn_boat(graphics);
+  spawn_boat(graphics);
 }
 
 bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed) {
@@ -33,9 +35,9 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
   if (spawn_timer <= 0) {
     spawn_timer += spawn_interval;
 
-    int r = rand() % 16;
+    int r = rand() % 8;
     if (r < 1) spawn_whale(graphics);
-    else if (r < 6) spawn_fish(graphics);
+    else if (r < 4) spawn_fish(graphics);
     else spawn_boat(graphics);
   }
 
@@ -53,9 +55,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
 
   if (input.key_pressed(SDLK_ESCAPE)) return false;
 
-  if (input.key_pressed(SDLK_SPACE)) {
-    tanker->toggle_leaking();
-  }
+  if (input.key_pressed(SDLK_SPACE)) tanker->start_leaking();
 
   tanker->update(map, elapsed);
   damage += map->update(elapsed);
@@ -69,8 +69,6 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     if (boat && map->is_oil(boat->x_pos(), boat->y_pos())) pr -= elapsed;
 
     if (obj->is_touching(tanker->x_pos(), tanker->y_pos())) {
-      fprintf(stderr, "Crash!\n");
-
       int value = obj->value();
       if (value < 0) {
         pr -= value;
@@ -98,7 +96,13 @@ void GameScreen::draw(Graphics& graphics) {
   }
 
   text->draw(graphics, 624, 16, boost::str(boost::format("Damages $% 9u") % damage), Text::RIGHT);
-  text->draw(graphics, 624, 32, boost::str(boost::format("PR % 5u") % pr), Text::RIGHT);
+
+  int n = 7 - pr / 8000;
+  if (n < 0) n = 0;
+  if (n > 7) n = 7;
+  face->draw(graphics, 608, 32, n);
+
+  text->draw(graphics, 608, 32, "Opinion: ", Text::RIGHT);
 }
 
 Screen* GameScreen::next_screen() {
@@ -110,8 +114,6 @@ std::string GameScreen::get_music_track() {
 }
 
 void GameScreen::spawn_boat(Graphics& graphics) {
-  fprintf(stderr, "Spawning boat\n");
-
   switch (rand() % 3) {
     case 0:
       objects.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 0, rand() % 20 + 10, Boat::RIGHT)));
@@ -132,10 +134,8 @@ void GameScreen::spawn_whale(Graphics& graphics) {
   unsigned int y = rand() % 30;
 
   if (map->is_water(x, y)) {
-    fprintf(stderr, "Spawing whale\n");
     objects.push_back(boost::shared_ptr<Whale>(new Whale(graphics, x, y)));
-  } else {
-    fprintf(stderr, "Failed to spawn whale\n");
+    // TODO check if first whale and alert
   }
 }
 
@@ -144,10 +144,8 @@ void GameScreen::spawn_fish(Graphics& graphics) {
   unsigned int y = rand() % 30;
 
   if (map->is_water(x, y)) {
-    fprintf(stderr, "Spawning fish\n");
     objects.push_back(boost::shared_ptr<Fish>(new Fish(graphics, x, y)));
-  } else {
-    fprintf(stderr, "Failed to spawn fish\n");
+    // TODO Check if first fish and alert
   }
 
 }

@@ -2,8 +2,12 @@
 
 #include "graphics.h"
 
+namespace {
+  const int leak_duration = 5000;
+}
+
 Tanker::Tanker(Graphics& graphics, unsigned int x, unsigned int y) :
-  WaterObject(x, y, 1.0f), leaking(false)
+  WaterObject(x, y, 1.0f), leak_timer(0)
 {
   facing = RIGHT;
 
@@ -11,6 +15,12 @@ Tanker::Tanker(Graphics& graphics, unsigned int x, unsigned int y) :
   sprites[RIGHT] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 32, 32, 16));
   sprites[UP]    = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 0, 16, 32));
   sprites[DOWN]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 16, 0, 16, 32));
+}
+
+void Tanker::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
+  WaterObject::update(map, elapsed);
+
+  if (leak_timer > 0) leak_timer -= elapsed;
 }
 
 void Tanker::draw(Graphics& graphics) {
@@ -39,4 +49,8 @@ void Tanker::start_moving(Direction dir) {
   if (dir == DOWN && facing == UP) return;
 
   WaterObject::start_moving(dir);
+}
+
+void Tanker::start_leaking() {
+  leak_timer = leak_duration;
 }
