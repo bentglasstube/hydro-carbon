@@ -124,7 +124,7 @@ void GameScreen::spawn_boat(Graphics& graphics) {
       break;
 
     case 2:
-      objects.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 29, rand() % 40, Boat::UP)));
+      objects.push_back(boost::shared_ptr<Boat>(new Boat(graphics, rand() % 40, 29, Boat::UP)));
       break;
   }
 }
