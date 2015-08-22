@@ -4,12 +4,10 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "boat.h"
 #include "map.h"
 #include "screen.h"
 #include "tanker.h"
 #include "text.h"
-#include "whale.h"
 
 class GameScreen : public Screen {
   public:

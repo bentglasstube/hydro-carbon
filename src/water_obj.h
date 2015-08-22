@@ -18,6 +18,7 @@ class WaterObject {
     virtual void start_moving(Direction dir);
 
     bool is_moving() { return progress < 1.0f; }
+    bool is_touching(unsigned int tx, unsigned int ty);
 
     unsigned int x_pos() { return x; }
     unsigned int y_pos() { return y; }

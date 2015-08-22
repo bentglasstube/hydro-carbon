@@ -2,11 +2,14 @@
 
 #include <boost/format.hpp>
 
+#include "boat.h"
+#include "fish.h"
 #include "input.h"
+#include "whale.h"
 
 namespace {
   const int starting_pr = 60000;
-  const int spawn_interval = 30000;
+  const int spawn_interval = 10000;
 }
 
 void GameScreen::init(Graphics& graphics) {
@@ -57,12 +60,28 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
   tanker->update(map, elapsed);
   damage += map->update(elapsed);
 
-  for (ObjectSet::iterator i = objects.begin(); i != objects.end(); ++i) {
+  ObjectSet::iterator i = objects.begin();
+  while (i != objects.end()) {
     boost::shared_ptr<WaterObject> obj = *i;
     obj->update(map, elapsed);
 
     boost::shared_ptr<Boat> boat = boost::dynamic_pointer_cast<Boat>(obj);
     if (boat && map->is_oil(boat->x_pos(), boat->y_pos())) pr -= elapsed;
+
+    if (obj->is_touching(tanker->x_pos(), tanker->y_pos())) {
+      fprintf(stderr, "Crash!\n");
+
+      int value = obj->value();
+      if (value < 0) {
+        pr -= value;
+      } else {
+        damage += value;
+      }
+
+      objects.erase(i);
+    } else {
+      ++i;
+    }
   }
 
   if (tanker->is_leaking()) damage += map->dump_oil(tanker->x_behind(), tanker->y_behind());
@@ -91,6 +110,8 @@ std::string GameScreen::get_music_track() {
 }
 
 void GameScreen::spawn_boat(Graphics& graphics) {
+  fprintf(stderr, "Spawning boat\n");
+
   switch (rand() % 3) {
     case 0:
       objects.push_back(boost::shared_ptr<Boat>(new Boat(graphics, 0, rand() % 20 + 10, Boat::RIGHT)));
@@ -110,12 +131,23 @@ void GameScreen::spawn_whale(Graphics& graphics) {
   unsigned int x = rand() % 40;
   unsigned int y = rand() % 30;
 
-  if (map->is_water(x, y)) objects.push_back(boost::shared_ptr<Whale>(new Whale(graphics, x, y)));
+  if (map->is_water(x, y)) {
+    fprintf(stderr, "Spawing whale\n");
+    objects.push_back(boost::shared_ptr<Whale>(new Whale(graphics, x, y)));
+  } else {
+    fprintf(stderr, "Failed to spawn whale\n");
+  }
 }
 
 void GameScreen::spawn_fish(Graphics& graphics) {
   unsigned int x = rand() % 40;
   unsigned int y = rand() % 30;
 
-  // if (map->is_water(x, y)) objects.push_back(boost::shared_ptr<Whale>(new Whale(graphics, x, y)));
+  if (map->is_water(x, y)) {
+    fprintf(stderr, "Spawning fish\n");
+    objects.push_back(boost::shared_ptr<Fish>(new Fish(graphics, x, y)));
+  } else {
+    fprintf(stderr, "Failed to spawn fish\n");
+  }
+
 }

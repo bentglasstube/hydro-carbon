@@ -30,3 +30,16 @@ void WaterObject::start_moving(Direction dir) {
   progress = 0.0f;
   facing = dir;
 }
+
+bool WaterObject::is_touching(unsigned int tx, unsigned int ty) {
+  if (is_moving() && progress > 0.5f) {
+    switch (facing) {
+      case LEFT: return x - 1 == tx && y == ty;
+      case RIGHT: return x + 1 == tx && y == ty;
+      case UP: return x == tx && y - 1 == ty;
+      case DOWN: return x == tx && y + 1 == ty;
+    }
+  }
+
+  return x == tx && y == ty;
+}
