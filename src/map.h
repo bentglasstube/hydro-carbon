@@ -25,8 +25,7 @@ class Map {
   private:
 
     void init_sprites(Graphics& graphics);
-    void spread_oil();
-    void spread_fire();
+    void spread_oil(unsigned int elapsed);
 
     enum TileType { WATER, OIL, LAND };
 

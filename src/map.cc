@@ -40,7 +40,7 @@ void Map::draw(Graphics& graphics) {
 }
 
 void Map::update(unsigned int elapsed) {
-  // TODO figure out chance of spreading fire and oil and shit
+  spread_oil(elapsed);
 }
 
 void Map::dump_oil(unsigned int x, unsigned int y) {
@@ -68,10 +68,19 @@ void Map::init_sprites(Graphics& graphics) {
   sprites[Map::LAND] = boost::shared_ptr<Sprite>(new Sprite(graphics, "map", 32, 0, 16, 16));
 }
 
-void Map::spread_oil() {
-  // TODO spread oil around to adjacent blocks
-}
-
-void Map::spread_fire() {
-  // TODO spread fire to nearby oil
+void Map::spread_oil(unsigned int elapsed) {
+  for (int y = 0; y < rows; ++y) {
+    for (int x = 0; x < cols; ++x) {
+      if (tiles[y][x] == OIL) {
+        if (elapsed >= rand() % 16384) {
+          switch (rand() % 4) {
+            case 0: dump_oil(x - 1, y); break;
+            case 1: dump_oil(x + 1, y); break;
+            case 2: dump_oil(x, y - 1); break;
+            case 3: dump_oil(x, y + 1); break;
+          }
+        }
+      }
+    }
+  }
 }
