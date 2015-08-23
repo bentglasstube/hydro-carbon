@@ -19,6 +19,8 @@ class Boat : public WaterObject {
 
   private:
 
+    Direction next_move(boost::shared_ptr<Map> map);
+
     std::map<Direction, boost::shared_ptr<Sprite>> sprites;
     float cleaning_progress;
 };
