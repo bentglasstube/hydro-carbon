@@ -30,12 +30,7 @@ void Boat::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
       map->clean(x, y);
     }
   } else {
-    switch (next_move(map)) {
-      case LEFT:  if (map->sailable(x - 1, y)) start_moving(LEFT);  break;
-      case RIGHT: if (map->sailable(x + 1, y)) start_moving(RIGHT); break;
-      case UP:    if (map->sailable(x, y - 1)) start_moving(UP);    break;
-      case DOWN:  if (map->sailable(x, y + 1)) start_moving(DOWN);  break;
-    }
+    move_if_possible(map, next_move(map));
   }
 }
 
@@ -45,10 +40,10 @@ void Boat::draw(Graphics& graphics) {
 
   if (is_moving()) {
     switch (facing) {
-      case LEFT: dx -= progress * 16; break;
+      case LEFT:  dx -= progress * 16; break;
       case RIGHT: dx += progress * 16; break;
-      case UP: dy -= progress * 16; break;
-      case DOWN: dy += progress * 16; break;
+      case UP:    dy -= progress * 16; break;
+      case DOWN:  dy += progress * 16; break;
     }
   }
 

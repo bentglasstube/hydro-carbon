@@ -43,3 +43,12 @@ bool WaterObject::is_touching(unsigned int tx, unsigned int ty) {
 
   return x == tx && y == ty;
 }
+
+void WaterObject::move_if_possible(boost::shared_ptr<Map> map, Direction dir) {
+  switch (dir) {
+    case LEFT:  if (map->sailable(x - 1, y)) start_moving(LEFT);  break;
+    case RIGHT: if (map->sailable(x + 1, y)) start_moving(RIGHT); break;
+    case UP:    if (map->sailable(x, y - 1)) start_moving(UP);    break;
+    case DOWN:  if (map->sailable(x, y + 1)) start_moving(DOWN);  break;
+  }
+}

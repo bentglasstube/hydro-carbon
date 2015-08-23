@@ -25,12 +25,14 @@ class GameScreen : public Screen {
 
   private:
 
-    enum Tips { OIL, BOAT, FISH, WHALE, CLEANUP, CRASH, OPINION };
+    enum Tips { OIL, BOAT, FISH, WHALE, CLEANUP, CRASH, OPINION, POLICE };
 
     static std::map<Tips, std::string> tips;
     static std::vector<std::string> tutorial;
 
     void spawn_boat(Graphics& graphics);
+    void spawn_police(Graphics& Graphics, Audio& audio);
+
     void spawn_whale(Graphics& graphics, Audio& audio);
     void spawn_fish(Graphics& graphics, Audio& audio);
     void spawn_barrel(Graphics& graphics);

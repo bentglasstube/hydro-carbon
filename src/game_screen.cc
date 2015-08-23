@@ -10,6 +10,7 @@
 #include "game_over_screen.h"
 #include "ghost.h"
 #include "input.h"
+#include "police.h"
 #include "smoke.h"
 #include "whale.h"
 
@@ -57,7 +58,10 @@ std::map<GameScreen::Tips, std::string> GameScreen::tips = {
   { GameScreen::OPINION,  "Abandon Ship!\n"
                           "The media has turned the masses against us.  They are likely\n"
                           "to bring a court case against us soon, forcing us to shore\n"
-                          "for who knows how long.  Time to get out of here." }
+                          "for who knows how long.  Time to get out of here." },
+  { GameScreen::POLICE,   "Busted!\n"
+                          "Looks like the police are after us.  When they catch us, it's\n"
+                          "all over.  It was a pleasure serving with you, captain.\n" }
 };
 
 std::vector<std::string> GameScreen::tutorial = {
@@ -119,11 +123,15 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
   if (spawn_timer <= 0) {
     spawn_timer += spawn_interval;
 
-    int r = rand() % 16;
-    if (r < 1) spawn_whale(graphics, audio);
-    else if (r < 4) spawn_fish(graphics, audio);
-    else if (r < 8) spawn_boat(graphics);
-    else spawn_barrel(graphics);
+    if (pr > 0) {
+      int r = rand() % 16;
+      if (r < 1) spawn_whale(graphics, audio);
+      else if (r < 4) spawn_fish(graphics, audio);
+      else if (r < 8) spawn_boat(graphics);
+      else spawn_barrel(graphics);
+    } else {
+      spawn_police(graphics, audio);
+    }
   }
 
   if (!tanker->is_moving()) {
@@ -166,39 +174,43 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     bool erase = false;
 
     if (map->is_oil(obj->x_pos(), obj->y_pos())) {
+
       if (ISA(obj, Boat)) {
         pr -= elapsed;
         maybe_show_message(CLEANUP);
-      }
 
-      if (ISA(obj, Whale)) {
+      } else if (ISA(obj, Whale)) {
         whales++;
         damage += whale_value;
         add_ghost(graphics, audio, obj);
         erase = true;
-      }
 
-      if (ISA(obj, Fish)) {
+      } else if (ISA(obj, Fish)) {
         fish++;
         damage += fish_value;
         add_ghost(graphics, audio, obj);
         erase = true;
       }
+
     }
 
     if (obj->is_touching(tanker->x_pos(), tanker->y_pos())) {
+
       if (ISA(obj, Boat)) {
         pr -= boat_value;
         audio.play_sample("crash");
         maybe_show_message(CRASH);
         erase = true;
-      }
 
-      if (ISA(obj, Barrel)) {
+      } else if (ISA(obj, Barrel)) {
         tanker->add_barrel();
         audio.play_sample("pickup");
         erase = true;
+
+      } else if (ISA(obj, Police)) {
+        return false;
       }
+
     }
 
     if (erase) objects.erase(i);
@@ -227,7 +239,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     smoke_timer += smoke_interval;
   }
 
-  return pr > 0;
+  return true;
 }
 
 void GameScreen::draw(Graphics& graphics) {
@@ -270,21 +282,64 @@ std::string GameScreen::get_music_track() {
 }
 
 void GameScreen::spawn_boat(Graphics& graphics) {
+  unsigned int x, y;
+  Boat::Direction d;
+
   switch (rand() % 3) {
     case 0:
-      objects.push_back(boost::shared_ptr<WaterObject>(new Boat(graphics, 0, rand() % (Map::rows - 10) + 10, Boat::RIGHT)));
+      x = 0;
+      y = rand() % (Map::rows - 10) + 10;
+      d = Boat::RIGHT;
+      break;
+
       break;
 
     case 1:
-      objects.push_back(boost::shared_ptr<WaterObject>(new Boat(graphics, Map::cols - 1, rand() % (Map::rows - 10) + 10, Boat::LEFT)));
+      x = Map::cols - 1;
+      y = rand() % (Map::rows - 10) + 10;
+      d = Boat::LEFT;
       break;
 
     case 2:
-      objects.push_back(boost::shared_ptr<WaterObject>(new Boat(graphics, rand() % Map::cols, Map::rows - 1, Boat::UP)));
+      x = rand() % Map::cols;
+      y = Map::rows - 1;
+      d = Boat::UP;
       break;
   }
 
+  objects.push_back(boost::shared_ptr<WaterObject>(new Boat(graphics, x, y, d)));
   maybe_show_message(BOAT);
+}
+
+void GameScreen::spawn_police(Graphics& graphics, Audio& audio) {
+  unsigned int x, y;
+  Police::Direction d;
+
+  switch (rand() % 3) {
+    case 0:
+      x = 0;
+      y = rand() % (Map::rows - 10) + 10;
+      d = Police::RIGHT;
+      break;
+
+      break;
+
+    case 1:
+      x = Map::cols - 1;
+      y = rand() % (Map::rows - 10) + 10;
+      d = Police::LEFT;
+      break;
+
+    case 2:
+      x = rand() % Map::cols;
+      y = Map::rows - 1;
+      d = Police::UP;
+      break;
+  }
+
+  objects.push_back(boost::shared_ptr<WaterObject>(new Police(graphics, x, y, d, tanker)));
+  maybe_show_message(POLICE);
+  audio.play_sample("police");
 }
 
 void GameScreen::spawn_whale(Graphics& graphics, Audio& audio) {

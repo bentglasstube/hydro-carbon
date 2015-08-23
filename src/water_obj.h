@@ -25,6 +25,8 @@ class WaterObject {
 
   protected:
 
+    void move_if_possible(boost::shared_ptr<Map> map, Direction dir);
+
     unsigned int x, y;
     float speed, progress;
     Direction facing;

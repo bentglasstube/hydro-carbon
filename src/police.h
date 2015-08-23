@@ -4,25 +4,24 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include "map.h"
 #include "sprite.h"
 #include "water_obj.h"
 
 class Graphics;
 
-class Boat : public WaterObject {
+class Police : public WaterObject {
   public:
 
-    Boat(Graphics& graphics, unsigned int x, unsigned int y, Direction dir);
+    Police(Graphics& graphics, unsigned int x, unsigned int y, Direction dir, boost::shared_ptr<WaterObject> target);
 
     void update(boost::shared_ptr<Map> map, unsigned int elapsed);
     void draw(Graphics& graphics);
 
-    bool is_cleaning() { return cleaning_progress > 0.0f; }
-
   private:
 
-    Direction next_move(boost::shared_ptr<Map> map);
+    Direction next_move();
 
     std::map<Direction, boost::shared_ptr<Sprite>> sprites;
-    float cleaning_progress;
+    boost::shared_ptr<WaterObject> target;
 };
