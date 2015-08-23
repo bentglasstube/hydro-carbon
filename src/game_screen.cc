@@ -15,7 +15,7 @@
 namespace {
   const int starting_pr = 63999;
   const int spawn_interval = 15000;
-  const int smoke_interval = 500;
+  const int smoke_interval = 250;
 
   const unsigned int hud_barrel = 8;
   const unsigned int hud_lawyer = 9;
@@ -206,7 +206,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     // TODO particles
   }
 
-  smoke_timer -= elapsed;
+  smoke_timer -= elapsed * (tanker->is_boosting() ? 2 : 1);
   if (smoke_timer < 0) {
     particles.push_back(boost::shared_ptr<Particle>(new Smoke(graphics, tanker->x_smoke(), tanker->y_smoke(), tanker->is_boosting())));
     smoke_timer += smoke_interval;

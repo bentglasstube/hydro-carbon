@@ -78,7 +78,7 @@ unsigned int Tanker::x_smoke() {
   switch (facing) {
     case LEFT:  return x_draw() + 24;
     case RIGHT: return x_draw() - 8;
-    default:    return x_draw();
+    default:    return x_draw() + rand() % 5 - 2;
   }
 }
 
@@ -86,7 +86,7 @@ unsigned int Tanker::y_smoke() {
   switch (facing) {
     case UP:   return y_draw() + 24;
     case DOWN: return y_draw() - 8;
-    default:   return y_draw();
+    default:   return y_draw() + rand() % 5 - 2;
   }
 }
 
