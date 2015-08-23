@@ -3,16 +3,18 @@
 Text::Text(Graphics &graphics) : Sprite(graphics, "text", 0, 0, 8, 16) {}
 
 void Text::draw(Graphics& graphics, unsigned int x, unsigned int y, std::string text, Text::Alignment alignment) {
+  unsigned int dx = 0, dy = 0;
+
   switch (alignment) {
     case Text::LEFT:
       break;
 
     case Text::CENTER:
-      x -= 4 * text.length();
+      dx = -4 * text.length();
       break;
 
     case Text::RIGHT:
-      x -= 8 * text.length();
+      dx = -8 * text.length();
       break;
   }
 
@@ -20,11 +22,14 @@ void Text::draw(Graphics& graphics, unsigned int x, unsigned int y, std::string 
     int n = 0;
     if ((*i) >= ' ' && (*i) <= '~') n = (*i) - ' ';
 
-    rect.x = 8 * (n % 16);
-    rect.y = 16 * (n / 16);
-
-    Sprite::draw(graphics, x, y);
-
-    x += 8;
+    if ((*i) == '\n') {
+      dx = 0;
+      dy += 16;
+    } else {
+      rect.x = 8 * (n % 16);
+      rect.y = 16 * (n / 16);
+      Sprite::draw(graphics, x + dx, y + dy);
+      dx += 8;
+    }
   }
 }

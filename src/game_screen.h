@@ -5,6 +5,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "map.h"
+#include "message.h"
 #include "multi_sprite.h"
 #include "screen.h"
 #include "tanker.h"
@@ -38,7 +39,15 @@ class GameScreen : public Screen {
 
     boost::shared_ptr<Text> text;
     boost::shared_ptr<MultiSprite> hud;
+    boost::shared_ptr<Message> msg;
 
     unsigned int damage, whales, fish;
     int pr, spawn_timer;
+
+    enum Tips { OIL, BOAT, FISH, WHALE, CLEANUP, CRASH, OPINION };
+    std::map<Tips, bool> shown;
+
+    static std::map<Tips, std::string> tips;
+
+    void maybe_show_message(Tips tip);
 };
