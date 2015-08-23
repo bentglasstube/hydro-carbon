@@ -264,7 +264,7 @@ Screen* GameScreen::next_screen() {
 }
 
 std::string GameScreen::get_music_track() {
-  return "";
+  return "funkyseas";
 }
 
 void GameScreen::spawn_boat(Graphics& graphics) {
