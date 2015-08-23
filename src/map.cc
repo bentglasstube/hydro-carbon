@@ -30,7 +30,7 @@ Map::Map(Graphics& graphics) {
 }
 
 void Map::draw(Graphics& graphics) {
-  for (int y = 1; y < rows; ++y) {
+  for (int y = 0; y < rows; ++y) {
     for (int x = 0; x < cols; ++x) {
       sprites[tiles[y][x]]->draw(graphics, 16 * x, 16 * y);
     }
