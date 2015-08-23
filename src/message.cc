@@ -23,9 +23,9 @@ void Message::update(unsigned int elapsed) {
 
 void Message::draw(Graphics& graphics) {
   if (timer > 0) {
-    box->draw(graphics, 0, 352);
-    mouth->draw(graphics, 32, 432);
-    text->draw(graphics, 96, 368, messages.front());
+    box->draw(graphics, 0, 16);
+    mouth->draw(graphics, 32, 96);
+    text->draw(graphics, 96, 32, messages.front());
   }
 }
 
