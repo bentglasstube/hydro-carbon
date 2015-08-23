@@ -6,8 +6,10 @@
 #include "animated_sprite.h"
 
 namespace {
-  const int leak_duration = 5000;
-  const int boost_duration = 5000;
+  const int buff_duration = 5000;
+
+  const float leak_speed_factor  = 0.75f;
+  const float boost_speed_factor = 3.00f;
 }
 
 Tanker::Tanker(Graphics& graphics, unsigned int x, unsigned int y) :
@@ -29,6 +31,7 @@ void Tanker::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
   if (leak_timer > 0) {
     leak_timer -= elapsed;
     if (leak_timer <= 0) {
+      speed /= leak_speed_factor;
       leak_timer = 0;
     }
   }
@@ -36,7 +39,7 @@ void Tanker::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
   if (boost_timer > 0) {
     boost_timer -= elapsed;
     if (boost_timer <= 0) {
-      speed /= 3.0f;
+      speed /= boost_speed_factor;
       boost_timer = 0;
     }
   }
@@ -60,7 +63,8 @@ void Tanker::start_leaking(Audio& audio) {
     audio.play_sample("nope");
   } else {
     barrels--;
-    leak_timer = leak_duration;
+    leak_timer = buff_duration;
+    speed *= leak_speed_factor;
 
     audio.play_sample("drop");
   }
@@ -71,8 +75,8 @@ void Tanker::boost(Audio& audio) {
     audio.play_sample("nope");
   } else {
     barrels--;
-    boost_timer = boost_duration;
-    speed *= 3;
+    boost_timer = buff_duration;
+    speed *= boost_speed_factor;
 
     audio.play_sample("boost");
   }

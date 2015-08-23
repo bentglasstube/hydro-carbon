@@ -4,7 +4,7 @@
 #include "map.h"
 
 namespace {
-  const float clean_time = 750.0f;
+  const float clean_time = 1000.0f;
 }
 
 Boat::Boat(Graphics& graphics, unsigned int x, unsigned int y, Direction dir) :
