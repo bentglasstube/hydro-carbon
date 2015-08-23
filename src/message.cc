@@ -3,6 +3,10 @@
 #include "animated_sprite.h"
 #include "graphics.h"
 
+namespace {
+  const unsigned int message_duration = 100;
+}
+
 Message::Message(Graphics& graphics) {
   text.reset(new Text(graphics));
 
@@ -15,7 +19,7 @@ void Message::update(unsigned int elapsed) {
     timer -= elapsed;
     if (timer <= 0) messages.pop();
   } else if (!messages.empty()) {
-    timer = messages.front().length() * 250;
+    timer = messages.front().length() * message_duration;
   }
 }
 
