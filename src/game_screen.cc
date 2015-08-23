@@ -217,7 +217,7 @@ void GameScreen::draw(Graphics& graphics) {
   draw_power_up(graphics, 112, hud_lawyer, tanker->lawyer_count());
   draw_power_up(graphics, 208, hud_celeb, tanker->celeb_count());
 
-  text->draw(graphics, 608, 0, boost::str(boost::format("Damages $% 9u") % damage), Text::RIGHT);
+  text->draw(graphics, 608, 0, boost::str(boost::format("Damage $% 9u") % damage), Text::RIGHT);
 
 
   int n = 7 - pr / 8000;
