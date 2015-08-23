@@ -11,20 +11,26 @@ Message::Message(Graphics& graphics) {
 }
 
 void Message::update(unsigned int elapsed) {
-  if (timer > 0) timer -= elapsed;
+  if (timer > 0) {
+    timer -= elapsed;
+    if (timer <= 0) {
+      messages.pop();
+    }
+  } else if (!messages.empty()) {
+    timer = messages.front().length() * 250;
+  }
 }
 
 void Message::draw(Graphics& graphics) {
   if (timer > 0) {
     box->draw(graphics, 0, 352);
     mouth->draw(graphics, 32, 432);
-    text->draw(graphics, 96, 368, message);
+    text->draw(graphics, 96, 368, messages.front());
   }
 }
 
 void Message::show(std::string text) {
-  timer = 250 * text.length();
-  message = text;
+  messages.push(text);
 }
 
 void Message::dismiss() {

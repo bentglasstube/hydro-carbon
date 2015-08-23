@@ -1,5 +1,6 @@
 #pragma once
 
+#include <queue>
 #include <string>
 
 #include <boost/shared_ptr.hpp>
@@ -22,7 +23,7 @@ class Message {
   private:
 
     int timer;
-    std::string message;
+    std::queue<std::string> messages;
     boost::shared_ptr<Text> text;
     boost::shared_ptr<Sprite> box, mouth;
 
