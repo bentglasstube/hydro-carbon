@@ -54,10 +54,10 @@ std::map<GameScreen::Tips, std::string> GameScreen::tips = {
                           "We have smashed into one of the hippies' boats!  That will\n"
                           "teach them to mess with us!  It seems that the public knows\n"
                           "what we did though, so be careful." },
-  { GameScreen::OPINION,  "Landlubbers!\n"
+  { GameScreen::OPINION,  "Abandon Ship!\n"
                           "The media has turned the masses against us.  They are likely\n"
                           "to bring a court case against us soon, forcing us to shore\n"
-                          "for who knows how long." }
+                          "for who knows how long.  Time to get out of here." }
 };
 
 std::vector<std::string> GameScreen::tutorial = {
@@ -255,6 +255,8 @@ void GameScreen::draw(Graphics& graphics) {
   if (n < 0) n = 0;
   if (n > 7) n = 7;
   hud->draw(graphics, 624, 0, n);
+
+  if (n == 7) maybe_show_message(OPINION);
 }
 
 Screen* GameScreen::next_screen() {
