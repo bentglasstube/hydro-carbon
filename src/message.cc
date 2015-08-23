@@ -32,6 +32,8 @@ void Message::show(std::string text) {
 }
 
 void Message::dismiss() {
-  // Set to 1 to expire next tick.  If you set to 0, it will just get requeued indefinitely
-  timer = 1;
+  if (!messages.empty()) {
+    timer = 0;
+    messages.pop();
+  }
 }
