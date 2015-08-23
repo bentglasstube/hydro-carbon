@@ -8,9 +8,12 @@
 #include "boat.h"
 #include "fish.h"
 #include "game_over_screen.h"
+#include "ghost.h"
 #include "input.h"
 #include "smoke.h"
 #include "whale.h"
+
+#define ISA(obj, type) boost::dynamic_pointer_cast<type>(obj)
 
 namespace {
   const int starting_pr = 63999;
@@ -20,6 +23,10 @@ namespace {
   const unsigned int hud_barrel = 8;
   const unsigned int hud_lawyer = 9;
   const unsigned int hud_celeb = 10;
+
+  const unsigned int fish_value = 500;
+  const unsigned int whale_value = 1500;
+  const unsigned int boat_value = 1000;
 }
 
 std::map<GameScreen::Tips, std::string> GameScreen::tips = {
@@ -156,38 +163,46 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     boost::shared_ptr<WaterObject> obj = *i;
     obj->update(map, elapsed);
 
-    boost::shared_ptr<Boat> boat = boost::dynamic_pointer_cast<Boat>(obj);
-    if (boat && map->is_oil(boat->x_pos(), boat->y_pos())) {
-      pr -= elapsed;
-      maybe_show_message(CLEANUP);
+    bool erase = false;
+
+    if (map->is_oil(obj->x_pos(), obj->y_pos())) {
+      if (ISA(obj, Boat)) {
+        pr -= elapsed;
+        maybe_show_message(CLEANUP);
+      }
+
+      if (ISA(obj, Whale)) {
+        whales++;
+        damage += whale_value;
+        add_ghost(graphics, audio, obj);
+        erase = true;
+      }
+
+      if (ISA(obj, Fish)) {
+        fish++;
+        damage += fish_value;
+        add_ghost(graphics, audio, obj);
+        erase = true;
+      }
     }
 
     if (obj->is_touching(tanker->x_pos(), tanker->y_pos())) {
-      int value = obj->value();
-      if (value < 0) {
-        pr -= value;
-        maybe_show_message(CRASH);
+      if (ISA(obj, Boat)) {
+        pr -= boat_value;
         audio.play_sample("crash");
-      } else {
-        damage += value;
+        maybe_show_message(CRASH);
+        erase = true;
       }
 
-      boost::shared_ptr<Barrel> barrel = boost::dynamic_pointer_cast<Barrel>(obj);
-      if (barrel) {
+      if (ISA(obj, Barrel)) {
         tanker->add_barrel();
         audio.play_sample("pickup");
+        erase = true;
       }
-
-      boost::shared_ptr<Whale> whale = boost::dynamic_pointer_cast<Whale>(obj);
-      if (whale) this->whales++;
-
-      boost::shared_ptr<Fish> fish = boost::dynamic_pointer_cast<Fish>(obj);
-      if (fish) this->fish++;
-
-      objects.erase(i);
-    } else {
-      ++i;
     }
+
+    if (erase) objects.erase(i);
+    else ++i;
   }
 
   ParticleSet::iterator j = particles.begin();
@@ -300,6 +315,11 @@ void GameScreen::spawn_barrel(Graphics& graphics) {
     objects.push_back(boost::shared_ptr<WaterObject>(new Barrel(graphics, x, y)));
     maybe_show_message(OIL);
   }
+}
+
+void GameScreen::add_ghost(Graphics& graphics, Audio& audio, boost::shared_ptr<WaterObject> obj) {
+  particles.push_back(boost::shared_ptr<Particle>(new Ghost(graphics, 16 * obj->x_pos(), 16 * obj->y_pos())));
+  audio.play_sample("ghost");
 }
 
 void GameScreen::draw_power_up(Graphics& graphics, unsigned int x, unsigned int icon, unsigned int count) {

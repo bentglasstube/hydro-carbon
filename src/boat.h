@@ -15,8 +15,6 @@ class Boat : public WaterObject {
     void update(boost::shared_ptr<Map> map, unsigned int elapsed);
     void draw(Graphics& graphics);
 
-    const int value() { return -1000; }
-
     bool is_cleaning() { return cleaning_progress > 0.0f; }
 
   private:

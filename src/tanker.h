@@ -18,8 +18,6 @@ class Tanker : public WaterObject {
     void update(boost::shared_ptr<Map> map, unsigned int elapsed);
     void draw(Graphics& graphics);
 
-    const int value() { return 0; }
-
     void start_moving(Direction dir);
     void start_leaking(Audio& audio);
     void boost(Audio& audio);

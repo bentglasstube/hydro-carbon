@@ -7,12 +7,9 @@ class Graphics;
 
 class Fish : public WaterObject {
   public:
-
     Fish(Graphics& graphics, unsigned int x, unsigned int y);
-
     void update(boost::shared_ptr<Map> map, unsigned int elapsed);
     void draw(Graphics& graphics);
-    const int value() { return 500; }
 
   private:
     boost::shared_ptr<Sprite> sprite;

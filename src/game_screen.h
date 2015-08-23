@@ -35,7 +35,10 @@ class GameScreen : public Screen {
     void spawn_fish(Graphics& graphics, Audio& audio);
     void spawn_barrel(Graphics& graphics);
 
+    void add_ghost(Graphics& graphics, Audio& audio, boost::shared_ptr<WaterObject> obj);
+
     void draw_power_up(Graphics& graphics, unsigned int x, unsigned int icon, unsigned int count);
+    void maybe_show_message(Tips tip);
 
     typedef std::vector<boost::shared_ptr<WaterObject>> ObjectSet;
     typedef std::vector<boost::shared_ptr<Particle>> ParticleSet;
@@ -53,6 +56,4 @@ class GameScreen : public Screen {
     int pr, spawn_timer, smoke_timer;
 
     std::map<Tips, bool> shown;
-
-    void maybe_show_message(Tips tip);
 };
