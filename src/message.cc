@@ -13,9 +13,7 @@ Message::Message(Graphics& graphics) {
 void Message::update(unsigned int elapsed) {
   if (timer > 0) {
     timer -= elapsed;
-    if (timer <= 0) {
-      messages.pop();
-    }
+    if (timer <= 0) messages.pop();
   } else if (!messages.empty()) {
     timer = messages.front().length() * 250;
   }
@@ -34,5 +32,6 @@ void Message::show(std::string text) {
 }
 
 void Message::dismiss() {
-  timer = 0;
+  // Set to 1 to expire next tick.  If you set to 0, it will just get requeued indefinitely
+  timer = 1;
 }
