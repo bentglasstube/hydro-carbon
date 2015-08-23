@@ -199,6 +199,8 @@ void GameScreen::spawn_boat(Graphics& graphics) {
       objects.push_back(boost::shared_ptr<WaterObject>(new Boat(graphics, rand() % Map::cols, Map::rows - 1, Boat::UP)));
       break;
   }
+
+  maybe_show_message(BOAT);
 }
 
 void GameScreen::spawn_whale(Graphics& graphics) {
