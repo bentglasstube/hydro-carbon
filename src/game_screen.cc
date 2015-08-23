@@ -3,6 +3,7 @@
 #include <boost/format.hpp>
 
 #include "animated_sprite.h"
+#include "audio.h"
 #include "barrel.h"
 #include "boat.h"
 #include "fish.h"
@@ -128,8 +129,13 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
 
   if (input.key_pressed(SDLK_ESCAPE)) return false;
 
-  if (input.key_pressed(SDLK_q)) tanker->start_leaking();
-  if (input.key_pressed(SDLK_e)) tanker->boost();
+  if (input.key_pressed(SDLK_q)) {
+    tanker->start_leaking(audio);
+  }
+
+  if (input.key_pressed(SDLK_e)) {
+    tanker->boost(audio);
+  }
 
   if (input.key_pressed(SDLK_t)) {
     msg->dismiss();
@@ -157,12 +163,16 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
       if (value < 0) {
         pr -= value;
         maybe_show_message(CRASH);
+        audio.play_sample("crash");
       } else {
         damage += value;
       }
 
       boost::shared_ptr<Barrel> barrel = boost::dynamic_pointer_cast<Barrel>(obj);
-      if (barrel) tanker->add_barrel();
+      if (barrel) {
+        tanker->add_barrel();
+        audio.play_sample("pickup.wav");
+      }
 
       boost::shared_ptr<Whale> whale = boost::dynamic_pointer_cast<Whale>(obj);
       if (whale) this->whales++;
@@ -251,6 +261,7 @@ void GameScreen::spawn_whale(Graphics& graphics) {
   if (map->is_water(x, y)) {
     objects.push_back(boost::shared_ptr<WaterObject>(new Whale(graphics, x, y)));
     maybe_show_message(WHALE);
+    audio.play_sample("whale");
   }
 }
 
@@ -261,6 +272,7 @@ void GameScreen::spawn_fish(Graphics& graphics) {
   if (map->is_water(x, y)) {
     objects.push_back(boost::shared_ptr<WaterObject>(new Fish(graphics, x, y)));
     maybe_show_message(FISH);
+    audio.play_sample("gulls");
   }
 }
 

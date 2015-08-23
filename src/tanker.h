@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "water_obj.h"
 
+class Audio;
 class Graphics;
 
 class Tanker : public WaterObject {
@@ -20,8 +21,8 @@ class Tanker : public WaterObject {
 
     const int value() { return 0; }
 
-    void start_leaking();
-    void boost();
+    void start_leaking(Audio& audio);
+    void boost(Audio& audio);
 
     bool is_leaking() { return leak_timer > 0; }
     bool is_boosting() { return boost_timer > 0; }

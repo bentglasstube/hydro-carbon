@@ -1,5 +1,6 @@
 #include "tanker.h"
 
+#include "audio.h"
 #include "graphics.h"
 
 #include "animated_sprite.h"
@@ -69,17 +70,21 @@ void Tanker::start_moving(Direction dir) {
   WaterObject::start_moving(dir);
 }
 
-void Tanker::start_leaking() {
+void Tanker::start_leaking(Audio& audio) {
   if (!is_leaking() && barrels > 0) {
     barrels--;
     leak_timer = leak_duration;
+
+    audio.play_sample("drop");
   }
 }
 
-void Tanker::boost() {
+void Tanker::boost(Audio& audio) {
   if (!is_boosting() && barrels > 0) {
     barrels--;
     boost_timer = boost_duration;
     speed *= 3;
+
+    audio.play_sample("boost");
   }
 }
