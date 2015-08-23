@@ -26,14 +26,19 @@ class Map {
     bool sailable(unsigned int x, unsigned int y);
     bool is_oil(unsigned int x, unsigned int y);
     bool is_water(unsigned int x, unsigned int y);
+    bool is_land(unsigned int x, unsigned int y);
 
   private:
 
-    void init_sprites(Graphics& graphics);
     unsigned int spread_oil(unsigned int elapsed);
 
     enum TileType { WATER, OIL, LAND };
+    enum EdgeType { NW, N, NE, W, E, SW, S, SE };
+    enum BeachType { INNER_LEFT, INNER_RIGHT, OUTER_LEFT, OUTER_MIDDLE, OUTER_RIGHT };
 
     std::vector<std::vector<TileType>> tiles;
-    std::map<TileType, boost::shared_ptr<Sprite>> sprites;
+
+    std::map<TileType,  boost::shared_ptr<Sprite>> tile_sprites;
+    std::map<EdgeType,  boost::shared_ptr<Sprite>> edge_sprites;
+    std::map<BeachType, boost::shared_ptr<Sprite>> beach_sprites;
 };

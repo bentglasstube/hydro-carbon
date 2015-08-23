@@ -5,9 +5,25 @@
 #include "sprite.h"
 
 Map::Map(Graphics& graphics) {
-  sprites[Map::WATER] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 0, 16, 16, 8));
-  sprites[Map::OIL] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 16, 16, 16, 8));
-  sprites[Map::LAND] = boost::shared_ptr<Sprite>(new Sprite(graphics, "map", 0, 32, 16, 16));
+  tile_sprites[Map::WATER] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0,  0, 16, 16, 8));
+  tile_sprites[Map::OIL]   = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 16, 16, 16, 8));
+  tile_sprites[Map::LAND]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "map", 64, 128, 16, 16));
+
+  edge_sprites[Map::NW] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 32, 16, 16, 4));
+  edge_sprites[Map::NE] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 48, 16, 16, 4));
+  edge_sprites[Map::SW] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 64, 16, 16, 4));
+  edge_sprites[Map::SE] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 80, 16, 16, 4));
+
+  edge_sprites[Map::N] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 32, 16, 16, 4));
+  edge_sprites[Map::S] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 48, 16, 16, 4));
+  edge_sprites[Map::W] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 64, 16, 16, 4));
+  edge_sprites[Map::E] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 80, 16, 16, 4));
+
+  beach_sprites[Map::INNER_LEFT]   = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map",  0,  96, 16, 16, 4));
+  beach_sprites[Map::INNER_RIGHT]  = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64,  96, 16, 16, 4));
+  beach_sprites[Map::OUTER_LEFT]   = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map",  0, 112, 16, 16, 4));
+  beach_sprites[Map::OUTER_RIGHT]  = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 112, 16, 16, 4));
+  beach_sprites[Map::OUTER_MIDDLE] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map",  0, 128, 16, 16, 4));
 
   tiles = std::vector<std::vector<TileType>>(rows, std::vector<TileType>(cols, Map::WATER));
 
@@ -32,7 +48,32 @@ Map::Map(Graphics& graphics) {
 void Map::draw(Graphics& graphics) {
   for (int y = 0; y < rows; ++y) {
     for (int x = 0; x < cols; ++x) {
-      sprites[tiles[y][x]]->draw(graphics, 16 * x, 16 * y);
+      const int dx = 16 * x;
+      const int dy = 16 * y;
+      tile_sprites[tiles[y][x]]->draw(graphics, dx, dy);
+
+      if (is_land(x, y)) {
+        if (sailable(x, y + 1)) {
+          if      (sailable(x - 1, y)) beach_sprites[Map::OUTER_LEFT]->draw(graphics, dx, dy);
+          else if (sailable(x + 1, y)) beach_sprites[Map::OUTER_RIGHT]->draw(graphics, dx, dy);
+          else                         beach_sprites[Map::OUTER_MIDDLE]->draw(graphics, dx, dy);
+        } else if (sailable(x - 1, y + 1)) {
+          beach_sprites[Map::INNER_LEFT]->draw(graphics, dx, dy);
+        } else if (sailable(x + 1, y + 1)) {
+          beach_sprites[Map::INNER_RIGHT]->draw(graphics, dx, dy);
+        }
+      }
+
+      if (is_oil(x - 1, y - 1)) edge_sprites[Map::NW]->draw(graphics, dx, dy);
+      if (is_oil(x + 1, y - 1)) edge_sprites[Map::NE]->draw(graphics, dx, dy);
+      if (is_oil(x - 1, y + 1)) edge_sprites[Map::SW]->draw(graphics, dx, dy);
+      if (is_oil(x + 1, y + 1)) edge_sprites[Map::SE]->draw(graphics, dx, dy);
+
+      if (is_oil(x - 1, y)) edge_sprites[Map::W]->draw(graphics, dx, dy);
+      if (is_oil(x + 1, y)) edge_sprites[Map::E]->draw(graphics, dx, dy);
+      if (is_oil(x, y - 1)) edge_sprites[Map::N]->draw(graphics, dx, dy);
+      if (is_oil(x, y + 1)) edge_sprites[Map::S]->draw(graphics, dx, dy);
+
     }
   }
 }
@@ -78,7 +119,10 @@ bool Map::is_water(unsigned int x, unsigned int y) {
   return tiles[y][x] == Map::WATER;
 }
 
-void Map::init_sprites(Graphics& graphics) {
+bool Map::is_land(unsigned int x, unsigned int y) {
+  if (x >= cols) return false;
+  if (y >= rows) return false;
+  return tiles[y][x] == Map::LAND;
 }
 
 unsigned int Map::spread_oil(unsigned int elapsed) {
