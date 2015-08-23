@@ -56,7 +56,9 @@ void Tanker::start_moving(Direction dir) {
 }
 
 void Tanker::start_leaking(Audio& audio) {
-  if (!is_leaking() && barrels > 0) {
+  if (is_leaking() || is_boosting() || barrels == 0) {
+    audio.play_sample("nope");
+  } else {
     barrels--;
     leak_timer = leak_duration;
 
@@ -65,7 +67,9 @@ void Tanker::start_leaking(Audio& audio) {
 }
 
 void Tanker::boost(Audio& audio) {
-  if (!is_boosting() && barrels > 0) {
+  if (is_leaking() || is_boosting() || barrels == 0) {
+    audio.play_sample("nope");
+  } else {
     barrels--;
     boost_timer = boost_duration;
     speed *= 3;
