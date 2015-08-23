@@ -12,9 +12,8 @@ namespace {
 }
 
 void GameOverScreen::init(Graphics& graphics) {
-  backdrop.reset(new Backdrop(graphics, "backdrop"));
+  backdrop.reset(new Backdrop(graphics, "paper"));
   text.reset(new Text(graphics));
-  title.reset(new Sprite(graphics, "gameover", 0, 0, 640, 96));
 
   icon_whale.reset(new Sprite(graphics, "ui", 0, 48, 32, 16));
   icon_fish.reset(new Sprite(graphics, "ui", 32, 48, 16, 16));
@@ -67,21 +66,22 @@ bool GameOverScreen::update(Input& input, Audio& audio, Graphics& graphics, unsi
 
 void GameOverScreen::draw(Graphics& graphics) {
   backdrop->draw(graphics);
-  title->draw(graphics, 0, 48);
 
-  unsigned int y = 160;
+  text->draw(graphics, 48, 80, "Environmental Impact Report");
+
+  unsigned int y = 112;
 
   if (fish_drawn > 0 || whales_drawn > 0) {
-    text->draw(graphics, 64, y, "Animals Killed:");
+    text->draw(graphics, 48, y, "Animals Killed:");
     y += 16;
-    unsigned int x = 64;
+    unsigned int x = 48;
 
     for (int i = 0; i < whales_drawn; ++i) {
       icon_whale->draw(graphics, x, y);
 
       x += 32;
       if (x > 544) {
-        x = 64;
+        x = 48;
         y += 16;
       }
     }
@@ -91,7 +91,7 @@ void GameOverScreen::draw(Graphics& graphics) {
 
       x += 16;
       if (x > 560) {
-        x = 64;
+        x = 48;
         y += 16;
       }
     }
@@ -100,10 +100,10 @@ void GameOverScreen::draw(Graphics& graphics) {
   }
 
   if (text_drawn) {
-    text->draw(graphics, 64, y, boost::str(boost::format("Total Damage: $% 9u") % damage));
-    text->draw(graphics, 64, y + 32, "Q: Play again");
-    text->draw(graphics, 64, y + 48, "E: Main Menu");
-    text->draw(graphics, 64, y + 64, "Esc: Quit");
+    text->draw(graphics, 48, y, boost::str(boost::format("Total Damage: $% 9u") % damage));
+    text->draw(graphics, 48, y + 32, "Q: Play again");
+    text->draw(graphics, 48, y + 48, "E: Main Menu");
+    text->draw(graphics, 48, y + 64, "Esc: Quit");
   }
 }
 

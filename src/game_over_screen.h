@@ -33,5 +33,5 @@ class GameOverScreen : public Screen {
 
     boost::shared_ptr<Backdrop> backdrop;
     boost::shared_ptr<Text> text;
-    boost::shared_ptr<Sprite> title, icon_whale, icon_fish;
+    boost::shared_ptr<Sprite> icon_whale, icon_fish;
 };
