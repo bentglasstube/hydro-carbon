@@ -12,5 +12,5 @@ class AnimatedSprite : public Sprite {
 
   private:
 
-    unsigned int bx, count;
+    unsigned int bx, count, start;
 };
