@@ -7,7 +7,7 @@ AnimatedSprite::AnimatedSprite(
   ) : Sprite(graphics, file, x, y, w, h), bx(x), count(count) {}
 
 void AnimatedSprite::draw(Graphics& graphics, unsigned int x, unsigned int y) {
-  int frame = (SDL_GetTicks() / 128) % count;
+  int frame = (SDL_GetTicks() / AnimatedSprite::frame_duration) % count;
   rect.x = bx + rect.w * frame;
   Sprite::draw(graphics, x, y);
 }

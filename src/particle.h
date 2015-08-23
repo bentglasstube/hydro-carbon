@@ -2,24 +2,18 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "sprite.h"
+class Graphics;
 
 class Particle {
   public:
 
-    Particle(
-        boost::shared_ptr<Sprite> sprite,
-        unsigned int x, unsigned int y,
-        unsigned int duration
-    );
+    Particle(unsigned int x, unsigned int y, unsigned int duration);
+    virtual bool update(unsigned int elapsed);
+    virtual void draw(Graphics& graphics) = 0;
 
-    bool update(unsigned int elapsed);
-    void draw(Graphics& graphics);
+  protected:
+    unsigned int x, y;
 
   private:
-
-    unsigned int x, y;
     int timer;
-    boost::shared_ptr<Sprite> sprite;
-    float dx, dy;
 };

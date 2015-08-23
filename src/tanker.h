@@ -17,12 +17,15 @@ class Tanker : public WaterObject {
 
     void update(boost::shared_ptr<Map> map, unsigned int elapsed);
     void draw(Graphics& graphics);
-    void start_moving(Direction dir);
 
     const int value() { return 0; }
 
+    void start_moving(Direction dir);
     void start_leaking(Audio& audio);
     void boost(Audio& audio);
+
+    unsigned int x_smoke();
+    unsigned int y_smoke();
 
     bool is_leaking() { return leak_timer > 0; }
     bool is_boosting() { return boost_timer > 0; }
@@ -40,4 +43,7 @@ class Tanker : public WaterObject {
     unsigned int barrels, lawyers, celebs;
     int leak_timer, boost_timer;
     std::map<Direction, boost::shared_ptr<Sprite>> sprites;
+
+    unsigned int x_draw();
+    unsigned int y_draw();
 };

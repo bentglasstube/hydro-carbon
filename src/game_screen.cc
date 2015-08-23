@@ -9,11 +9,13 @@
 #include "fish.h"
 #include "game_over_screen.h"
 #include "input.h"
+#include "smoke.h"
 #include "whale.h"
 
 namespace {
   const int starting_pr = 63999;
   const int spawn_interval = 15000;
+  const int smoke_interval = 500;
 
   const unsigned int hud_barrel = 8;
   const unsigned int hud_lawyer = 9;
@@ -90,6 +92,7 @@ void GameScreen::init(Graphics& graphics) {
   tanker.reset(new Tanker(graphics, 1, 10));
 
   objects = ObjectSet();
+  particles = ParticleSet();
 
   text.reset(new Text(graphics));
   hud.reset(new MultiSprite(graphics, "ui", 0, 0, 16, 16, 4, 3));
@@ -98,7 +101,8 @@ void GameScreen::init(Graphics& graphics) {
   damage = whales = fish = 0;
   pr = starting_pr;
 
-  spawn_timer = spawn_interval;
+  spawn_timer = spawn_interval / 2;
+  smoke_timer = smoke_interval;
 
   msg->show("Press T for a tutorial or space to dismiss this.");
 }
@@ -186,6 +190,15 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     }
   }
 
+  ParticleSet::iterator j = particles.begin();
+  while (j != particles.end()) {
+    if ((*j)->update(elapsed)) {
+      ++j;
+    } else {
+      particles.erase(j);
+    }
+  }
+
   msg->update(elapsed);
 
   if (tanker->is_leaking()) {
@@ -193,10 +206,10 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     // TODO particles
   }
 
-  if (tanker->is_boosting()) {
-    // TODO particles
-  } else {
-    // TODO particles
+  smoke_timer -= elapsed;
+  if (smoke_timer < 0) {
+    particles.push_back(boost::shared_ptr<Particle>(new Smoke(graphics, tanker->x_smoke(), tanker->y_smoke(), tanker->is_boosting())));
+    smoke_timer += smoke_interval;
   }
 
   return pr > 0;
@@ -211,6 +224,10 @@ void GameScreen::draw(Graphics& graphics) {
 
   tanker->draw(graphics);
 
+  for (ParticleSet::iterator i = particles.begin(); i != particles.end(); ++i) {
+    (*i)->draw(graphics);
+  }
+
   msg->draw(graphics);
 
   draw_power_up(graphics, 16, hud_barrel, tanker->barrel_count());
@@ -218,7 +235,6 @@ void GameScreen::draw(Graphics& graphics) {
   draw_power_up(graphics, 208, hud_celeb, tanker->celeb_count());
 
   text->draw(graphics, 608, 0, boost::str(boost::format("Damage $% 9u") % damage), Text::RIGHT);
-
 
   int n = 7 - pr / 8000;
   if (n < 0) n = 0;

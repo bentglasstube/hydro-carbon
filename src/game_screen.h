@@ -7,6 +7,7 @@
 #include "map.h"
 #include "message.h"
 #include "multi_sprite.h"
+#include "particle.h"
 #include "screen.h"
 #include "tanker.h"
 #include "text.h"
@@ -37,17 +38,19 @@ class GameScreen : public Screen {
     void draw_power_up(Graphics& graphics, unsigned int x, unsigned int icon, unsigned int count);
 
     typedef std::vector<boost::shared_ptr<WaterObject>> ObjectSet;
+    typedef std::vector<boost::shared_ptr<Particle>> ParticleSet;
 
     boost::shared_ptr<Map> map;
     boost::shared_ptr<Tanker> tanker;
     ObjectSet objects;
+    ParticleSet particles;
 
     boost::shared_ptr<Text> text;
     boost::shared_ptr<MultiSprite> hud;
     boost::shared_ptr<Message> msg;
 
     unsigned int damage, whales, fish;
-    int pr, spawn_timer;
+    int pr, spawn_timer, smoke_timer;
 
     std::map<Tips, bool> shown;
 
