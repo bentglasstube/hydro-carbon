@@ -109,8 +109,8 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     spawn_timer += spawn_interval;
 
     int r = rand() % 16;
-    if (r < 1) spawn_whale(graphics);
-    else if (r < 4) spawn_fish(graphics);
+    if (r < 1) spawn_whale(graphics, audio);
+    else if (r < 4) spawn_fish(graphics, audio);
     else if (r < 8) spawn_boat(graphics);
     else spawn_barrel(graphics);
   }
@@ -171,7 +171,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
       boost::shared_ptr<Barrel> barrel = boost::dynamic_pointer_cast<Barrel>(obj);
       if (barrel) {
         tanker->add_barrel();
-        audio.play_sample("pickup.wav");
+        audio.play_sample("pickup");
       }
 
       boost::shared_ptr<Whale> whale = boost::dynamic_pointer_cast<Whale>(obj);
@@ -254,7 +254,7 @@ void GameScreen::spawn_boat(Graphics& graphics) {
   maybe_show_message(BOAT);
 }
 
-void GameScreen::spawn_whale(Graphics& graphics) {
+void GameScreen::spawn_whale(Graphics& graphics, Audio& audio) {
   unsigned int x = rand() % Map::cols;
   unsigned int y = rand() % (Map::rows - 10) + 10;
 
@@ -265,7 +265,7 @@ void GameScreen::spawn_whale(Graphics& graphics) {
   }
 }
 
-void GameScreen::spawn_fish(Graphics& graphics) {
+void GameScreen::spawn_fish(Graphics& graphics, Audio& audio) {
   unsigned int x = rand() % Map::cols;
   unsigned int y = rand() % (Map::rows - 10) + 10;
 

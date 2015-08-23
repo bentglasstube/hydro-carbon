@@ -30,8 +30,8 @@ class GameScreen : public Screen {
     static std::vector<std::string> tutorial;
 
     void spawn_boat(Graphics& graphics);
-    void spawn_whale(Graphics& graphics);
-    void spawn_fish(Graphics& graphics);
+    void spawn_whale(Graphics& graphics, Audio& audio);
+    void spawn_fish(Graphics& graphics, Audio& audio);
     void spawn_barrel(Graphics& graphics);
 
     void draw_power_up(Graphics& graphics, unsigned int x, unsigned int icon, unsigned int count);
