@@ -9,7 +9,7 @@
 #include "title_screen.h"
 
 namespace {
-  const int interval = 500;
+  const int interval = 250;
 }
 
 void GameOverScreen::init(Graphics& graphics) {
