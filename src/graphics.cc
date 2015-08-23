@@ -8,9 +8,7 @@ namespace {
 }
 
 Graphics::Graphics() {
-  int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN_DESKTOP;
-
-  window = SDL_CreateWindow("Ludum Dare", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+  window = SDL_CreateWindow("Ludum Dare 33", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width * 2, height * 2, SDL_WINDOW_OPENGL);
   renderer = SDL_CreateRenderer(window, -1, 0);
 
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest"); // retro!
