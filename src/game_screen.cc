@@ -50,6 +50,40 @@ std::map<GameScreen::Tips, std::string> GameScreen::tips = {
                           "for who knows how long." }
 };
 
+std::vector<std::string> GameScreen::tutorial = {
+  "Ahoy!\n"
+  "Welcome aboard, Captain.  Our job today is to desrtoy as much\n"
+  "terrible nature as possible by dumping oil into the water.  I\n"
+  "will show you the ropes so we can deal as much damage as\n"
+  "possible.  Press space when you are done with this message, or\n"
+  "you can just wait for it to go away.",
+
+  "Control the oil tanker with WASD.  If you stop pressing the\n"
+  "keys, the tanker will stop, too.  We started the day with five\n"
+  "barrels of oil, which you can see in the top left of the\n"
+  "screen.  These barrels can be used for two different things.\n"
+  "By pressing Q, you can dump a barrel into the ocean, causing\n"
+  "environmental damage.",
+
+  "By presseing E, you can use the oil to give the engine an extra\n"
+  "bit of juice for a short period.  Use these barrels wisely, but\n"
+  "don't be too stingy, as I'm sure we'll find more around.",
+
+  "Various different things might be found in the nearby waters.\n"
+  "I will give you hints about each thing as we come across them.\n"
+  "The main thing you need to worry about (aside from destroying\n"
+  "the stupid environment) is the public.",
+
+  "The public's feelings about us is shown in the top right corner\n"
+  "of the screen.  When the public gets too upset with our\n"
+  "destruction, the government will be forced to act and we'll\n"
+  "have to stop to deal with any lawsuits or what have you.",
+
+  "That's about all there is to it.  If you need to hear these\n"
+  "words of wisdom again, just hit T.\n\n"
+  "Good luck, sir!",
+};
+
 void GameScreen::init(Graphics& graphics) {
   map.reset(new Map(graphics));
   tanker.reset(new Tanker(graphics, 1, 10));
@@ -64,6 +98,8 @@ void GameScreen::init(Graphics& graphics) {
   pr = starting_pr;
 
   spawn_timer = spawn_interval;
+
+  msg->show("Press T for a tutorial or space to dismiss this.");
 }
 
 bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed) {
@@ -94,6 +130,11 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
 
   if (input.key_pressed(SDLK_q)) tanker->start_leaking();
   if (input.key_pressed(SDLK_e)) tanker->boost();
+
+  if (input.key_pressed(SDLK_t)) {
+    msg->dismiss();
+    for (std::vector<std::string>::iterator i = GameScreen::tutorial.begin(); i != GameScreen::tutorial.end(); ++i) msg->show(*i);
+  }
 
   if (input.key_pressed(SDLK_SPACE)) msg->dismiss();
 

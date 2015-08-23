@@ -24,6 +24,11 @@ class GameScreen : public Screen {
 
   private:
 
+    enum Tips { OIL, BOAT, FISH, WHALE, CLEANUP, CRASH, OPINION };
+
+    static std::map<Tips, std::string> tips;
+    static std::vector<std::string> tutorial;
+
     void spawn_boat(Graphics& graphics);
     void spawn_whale(Graphics& graphics);
     void spawn_fish(Graphics& graphics);
@@ -44,10 +49,7 @@ class GameScreen : public Screen {
     unsigned int damage, whales, fish;
     int pr, spawn_timer;
 
-    enum Tips { OIL, BOAT, FISH, WHALE, CLEANUP, CRASH, OPINION };
     std::map<Tips, bool> shown;
-
-    static std::map<Tips, std::string> tips;
 
     void maybe_show_message(Tips tip);
 };
