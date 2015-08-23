@@ -2,6 +2,7 @@
 
 #include <boost/format.hpp>
 
+#include "audio.h"
 #include "input.h"
 #include "game_screen.h"
 #include "graphics.h"
@@ -18,10 +19,9 @@ void GameOverScreen::init(Graphics& graphics) {
   icon_whale.reset(new Sprite(graphics, "ui", 0, 48, 32, 16));
   icon_fish.reset(new Sprite(graphics, "ui", 32, 48, 16, 16));
 
+  phase = TITLE;
   fish_drawn = whales_drawn = 0;
-  text_drawn = false;
-
-  timer = interval * 3;
+  timer = 0;
 }
 
 bool GameOverScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed) {
@@ -30,18 +30,24 @@ bool GameOverScreen::update(Input& input, Audio& audio, Graphics& graphics, unsi
   if (timer < 0) {
     timer += interval;
 
-    if (whales > 0) {
-      whales_drawn++;
-      if (--whales == 0) timer += 2 * interval;
-    } else if (fish > 0) {
-      fish_drawn++;
-      if (--fish == 0) timer += 2 * interval;
+    if (phase == KILLS) {
+      if (whales > 0) {
+        whales_drawn++;
+        audio.play_sample("kill");
+        if (--whales == 0) timer += 2 * interval;
+      } else if (fish > 0) {
+        fish_drawn++;
+        audio.play_sample("kill");
+        if (--fish == 0) timer += 2 * interval;
+      } else {
+        next_phase(audio);
+      }
     } else {
-      text_drawn = true;
+      next_phase(audio);
     }
   }
 
-  if (text_drawn) {
+  if (phase == OPTIONS) {
     if (input.key_pressed(SDLK_q)) {
       choice = REPLAY;
       return false;
@@ -54,10 +60,11 @@ bool GameOverScreen::update(Input& input, Audio& audio, Graphics& graphics, unsi
     }
   } else {
     if (input.any_pressed()) {
-      text_drawn = true;
       whales_drawn += whales;
       fish_drawn += fish;
       whales = fish = 0;
+      phase = OPTIONS;
+      audio.play_sample("boom");
     }
   }
 
@@ -67,11 +74,11 @@ bool GameOverScreen::update(Input& input, Audio& audio, Graphics& graphics, unsi
 void GameOverScreen::draw(Graphics& graphics) {
   backdrop->draw(graphics);
 
-  text->draw(graphics, 48, 80, "Environmental Impact Report");
+  if (phase >= TITLE) text->draw(graphics, 48, 80, "Environmental Impact Report");
 
   unsigned int y = 112;
 
-  if (fish_drawn > 0 || whales_drawn > 0) {
+  if (phase >= KILLS) {
     text->draw(graphics, 48, y, "Animals Killed:");
     y += 16;
     unsigned int x = 48;
@@ -99,11 +106,15 @@ void GameOverScreen::draw(Graphics& graphics) {
     y += 32;
   }
 
-  if (text_drawn) {
+  if (phase >= DAMAGE) {
     text->draw(graphics, 48, y, boost::str(boost::format("Total Damage: $% 9u") % damage));
-    text->draw(graphics, 48, y + 32, "Q: Play again");
-    text->draw(graphics, 48, y + 48, "E: Main Menu");
-    text->draw(graphics, 48, y + 64, "Esc: Quit");
+    y += 32;
+  }
+
+  if (phase >= OPTIONS) {
+    text->draw(graphics, 48, y, "Q: Play again");
+    text->draw(graphics, 48, y + 16, "E: Main Menu");
+    text->draw(graphics, 48, y + 32, "Esc: Quit");
   }
 }
 
@@ -123,5 +134,13 @@ void GameOverScreen::set_scores(unsigned int total_damage, unsigned int whales_k
   damage = total_damage;
   whales = whales_killed;
   fish = fish_killed;
+}
+
+void GameOverScreen::next_phase(Audio& audio) {
+  if (phase == OPTIONS) return;
+
+  phase = static_cast<Phase>(phase + 1);
+  timer += interval * 2;
+  audio.play_sample("boom");
 }
 

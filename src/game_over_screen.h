@@ -24,11 +24,14 @@ class GameOverScreen : public Screen {
   private:
 
     enum Choice { REPLAY, MENU, QUIT };
+    enum Phase { TITLE, KILLS, DAMAGE, OPTIONS };
+
+    void next_phase(Audio& audio);
 
     Choice choice;
+    Phase phase;
     unsigned int damage, whales, fish;
     unsigned int whales_drawn, fish_drawn;
-    bool text_drawn;
     int timer;
 
     boost::shared_ptr<Backdrop> backdrop;
