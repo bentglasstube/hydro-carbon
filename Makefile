@@ -34,4 +34,7 @@ game.glc: $(EXECUTABLE)
 clean:
 	rm -rf $(BUILDDIR)
 
-.PHONY: all clean run video
+debug: $(EXECUTABLE)
+	gdb $(EXECUTABLE)
+
+.PHONY: all clean run video debug
