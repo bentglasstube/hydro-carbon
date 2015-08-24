@@ -184,7 +184,7 @@ void GameOverScreen::draw(Graphics& graphics) {
     if (place < 10) {
       text->draw(graphics, 48, y,
           "Congratulations, you are one of the most horrible people we\n"
-          "have ever encountered.  Please acknowledge receipte of this\n"
+          "have ever encountered.  Please acknowledge receipt of this\n"
           "report by entering your initials above.\n"
       );
 
