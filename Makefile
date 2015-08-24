@@ -37,4 +37,11 @@ clean:
 debug: $(EXECUTABLE)
 	gdb $(EXECUTABLE)
 
-.PHONY: all clean run video debug
+package: HydroCarbon-linux.tgz $(EXECUTABLE)
+	mkdir -p HydroCarbon
+	cp $(EXECUTABLE) HydroCarbon/.
+	cp -r content HydroCarbon/.
+	tar zcf HydroCarbon-linux.tgz HydroCarbon
+	rm -rf HydroCarbon
+
+.PHONY: all clean run video debug package

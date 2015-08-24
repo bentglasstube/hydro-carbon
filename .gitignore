@@ -3,3 +3,5 @@ game.glc
 game.mkv
 todo.txt
 res/*.bak
+*.tgz
+*.zip
