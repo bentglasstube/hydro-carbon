@@ -1,5 +1,8 @@
 #include "game_over_screen.h"
 
+#include <stdio.h>
+#include <string.h>
+
 #include <boost/format.hpp>
 
 #include "audio.h"
@@ -21,7 +24,36 @@ void GameOverScreen::init(Graphics& graphics) {
 
   phase = TITLE;
   fish_drawn = whales_drawn = 0;
+  place = 99;
+  initials_pos = 0;
   timer = 0;
+
+  FILE* fd = fopen("content/scores.txt", "r");
+  if (fd) {
+    for (int i = 0; i < 10; ++i) {
+      char initials[4];
+      unsigned int score;
+
+      fscanf(fd, "%s%u\n", &initials, &score);
+
+      if (damage > score && place > 10) {
+        fprintf(stderr, "Congrats, %u place\n", i);
+        place = i;
+        strcpy(top_scores[i].initials, "___");
+        top_scores[i].score = damage;
+        ++i;
+      }
+
+      // bounds check in case bottom score was bumped
+      if (i < 10) {
+        strcpy(top_scores[i].initials, initials);
+        top_scores[i].score = score;
+      }
+    }
+    fclose(fd);
+  } else {
+    fprintf(stderr, "Unable to read high score file\n");
+  }
 }
 
 bool GameOverScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed) {
@@ -42,12 +74,13 @@ bool GameOverScreen::update(Input& input, Audio& audio, Graphics& graphics, unsi
       } else {
         next_phase(audio);
       }
-    } else {
+    } else if (phase != SCORES) {
       next_phase(audio);
     }
   }
 
   if (phase == OPTIONS) {
+
     if (input.key_pressed(SDLK_q)) {
       choice = REPLAY;
       return false;
@@ -58,13 +91,40 @@ bool GameOverScreen::update(Input& input, Audio& audio, Graphics& graphics, unsi
       choice = QUIT;
       return false;
     }
-  } else {
+
+  } else if (phase == KILLS) {
     if (input.any_pressed()) {
       whales_drawn += whales;
       fish_drawn += fish;
       whales = fish = 0;
-      phase = OPTIONS;
-      audio.play_sample("boom");
+      next_phase(audio);
+    }
+
+  } else if (phase == SCORES) {
+
+    if (place < 10 && initials_pos < 3) {
+      // horrible hack because of how I handle input :(
+      for (int i = SDLK_a; i < SDLK_z; ++i) {
+        if (input.key_pressed(i)) {
+          top_scores[place].initials[initials_pos] = i - SDLK_a + 'A';
+          ++initials_pos;
+          break;
+        }
+      }
+
+      if (initials_pos == 3) {
+        FILE* fd = fopen("content/scores.txt", "w");
+        if (fd) {
+          for (int i = 0; i < 10; ++i) {
+            fprintf(fd, "%3s %u\n", top_scores[i].initials, top_scores[i].score);
+          }
+          fclose(fd);
+        } else {
+          fprintf(stderr, "Unable to write scores to file\n");
+        }
+      }
+    } else {
+      next_phase(audio);
     }
   }
 
@@ -111,10 +171,29 @@ void GameOverScreen::draw(Graphics& graphics) {
     y += 32;
   }
 
+  if (phase >= SCORES) {
+    text->draw(graphics, 48, y, "Most Wanted:");
+    for (int i = 0; i < 5; ++i) {
+      text->draw(graphics,  48, y + 16 * i + 16, boost::str(boost::format("% 2u. %3s   $% 9u") % i % top_scores[i].initials % top_scores[i].score));
+      text->draw(graphics, 320, y + 16 * i + 16, boost::str(boost::format("% 2u. %3s   $% 9u") % (i + 5) % top_scores[i + 5].initials % top_scores[i + 5].score));
+    }
+
+    y += 112;
+
+    if (place < 10) {
+      text->draw(graphics, 48, y,
+          "Congratulations, you are one of the most horrible people we\n"
+          "have ever encountered.  Please acknowledge receipte of this\n"
+          "report by entering your initials above.\n"
+      );
+
+      y += 64;
+    }
+
+  }
+
   if (phase >= OPTIONS) {
-    text->draw(graphics, 48, y, "Q: Play again");
-    text->draw(graphics, 48, y + 16, "E: Main Menu");
-    text->draw(graphics, 48, y + 32, "Esc: Quit");
+    text->draw(graphics, 48, y, "Q: Play again     E: Main Menu     Esc: Quit");
   }
 }
 
@@ -143,4 +222,3 @@ void GameOverScreen::next_phase(Audio& audio) {
   timer += interval * 2;
   audio.play_sample("boom");
 }
-

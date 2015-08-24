@@ -208,6 +208,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
         erase = true;
 
       } else if (ISA(obj, Police)) {
+        // captured, game over
         return false;
       }
 

@@ -24,7 +24,12 @@ class GameOverScreen : public Screen {
   private:
 
     enum Choice { REPLAY, MENU, QUIT };
-    enum Phase { TITLE, KILLS, DAMAGE, OPTIONS };
+    enum Phase { TITLE, KILLS, DAMAGE, SCORES, OPTIONS };
+
+    struct HighScore {
+      char         initials[3];
+      unsigned int score;
+    };
 
     void next_phase(Audio& audio);
 
@@ -32,7 +37,11 @@ class GameOverScreen : public Screen {
     Phase phase;
     unsigned int damage, whales, fish;
     unsigned int whales_drawn, fish_drawn;
+
+    unsigned int place, initials_pos;
+
     int timer;
+    HighScore top_scores[10];
 
     boost::shared_ptr<Backdrop> backdrop;
     boost::shared_ptr<Text> text;
