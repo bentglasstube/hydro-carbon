@@ -65,28 +65,15 @@ Boat::Direction Boat::next_move(boost::shared_ptr<Map> map) {
   Direction left  = static_cast<Direction>((facing + 3) % 4);
   Direction right = static_cast<Direction>((facing + 1) % 4);
 
-  if (__check_oil(map, x, y, facing)) {
-    fprintf(stderr, "Oil ahead, continue forward\n");
-    return facing;
-  }
+  if (__check_oil(map, x, y, facing)) return facing;
 
   bool oil_left = __check_oil(map, x, y, left);
   bool oil_right = __check_oil(map, x, y, right);
 
   if (oil_left) {
-    if (oil_right) {
-      fprintf(stderr, "Oil left and right, pick one randomly\n");
-      return rand() % 2 == 1 ? left : right;
-    } else {
-      fprintf(stderr, "Oil left only, go left\n");
-      return left;
-    }
-  } else if (oil_right) {
-    fprintf(stderr, "Oil right only, go right\n");
-    return right;
-  }
-
-  fprintf(stderr, "No oil nearby, go wherever\n");
+    if (oil_right) return rand() % 2 == 1 ? left : right;
+    return left;
+  } else if (oil_right) return right;
 
   switch (rand() % 4) {
     case 0: return left;
