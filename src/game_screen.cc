@@ -66,7 +66,7 @@ std::map<GameScreen::Tips, std::string> GameScreen::tips = {
 
 std::vector<std::string> GameScreen::tutorial = {
   "Ahoy!\n"
-  "Welcome aboard, Captain.  Our job today is to desrtoy as much\n"
+  "Welcome aboard, Captain.  Our job today is to destroy as much\n"
   "terrible nature as possible by dumping oil into the water.  I\n"
   "will show you the ropes so we can deal as much damage as\n"
   "possible.  Press space when you are done with this message, or\n"
