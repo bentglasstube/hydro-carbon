@@ -174,8 +174,9 @@ void GameOverScreen::draw(Graphics& graphics) {
   if (phase >= SCORES) {
     text->draw(graphics, 48, y, "Most Wanted:");
     for (int i = 0; i < 5; ++i) {
-      text->draw(graphics,  48, y + 16 * i + 16, boost::str(boost::format("% 2u. %3s   $% 9u") % i % top_scores[i].initials % top_scores[i].score));
-      text->draw(graphics, 320, y + 16 * i + 16, boost::str(boost::format("% 2u. %3s   $% 9u") % (i + 5) % top_scores[i + 5].initials % top_scores[i + 5].score));
+      text->draw(graphics,  48, y + 16 * i + 16, boost::str(boost::format("%2u. %3s   $%9u") % (i + 1) % top_scores[i].initials % top_scores[i].score));
+      text->draw(graphics, 320, y + 16 * i + 16, boost::str(boost::format("%2u. %3s   $%9u") % (i + 6) % top_scores[i + 5].initials % top_scores[i + 5].score));
+
     }
 
     y += 112;
