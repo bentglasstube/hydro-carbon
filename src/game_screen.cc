@@ -214,7 +214,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
 
     }
 
-    if (erase) objects.erase(i);
+    if (erase) i = objects.erase(i);
     else ++i;
   }
 
@@ -223,7 +223,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned
     if ((*j)->update(elapsed)) {
       ++j;
     } else {
-      particles.erase(j);
+      j = particles.erase(j);
     }
   }
 
