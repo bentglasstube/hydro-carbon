@@ -1,7 +1,6 @@
 build
-game.glc
-game.mkv
-todo.txt
-res/*.bak
 *.tgz
 *.zip
+*.dll
+*.exe
+*.app
