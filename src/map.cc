@@ -83,8 +83,8 @@ int Map::update(int elapsed) {
 }
 
 int Map::dump_oil(int x, int y) {
-  if (x >= cols) return 0;
-  if (y >= rows) return 0;
+  if (x >= cols || x < 0) return 0;
+  if (y >= rows || y < 0) return 0;
 
   if (tiles[y][x] == Map::WATER) {
     tiles[y][x] = Map::OIL;
@@ -95,33 +95,33 @@ int Map::dump_oil(int x, int y) {
 }
 
 void Map::clean(int x, int y) {
-  if (x >= cols) return;
-  if (y >= rows) return;
+  if (x >= cols || x < 0) return;
+  if (y >= rows || y < 0) return;
 
   if (tiles[y][x] == Map::OIL) tiles[y][x] = Map::WATER;
 }
 
 bool Map::sailable(int x, int y) {
-  if (x >= cols) return false;
-  if (y >= rows) return false;
+  if (x >= cols || x < 0) return false;
+  if (y >= rows || y < 0) return false;
   return tiles[y][x] != Map::LAND;
 }
 
 bool Map::is_oil(int x, int y) {
-  if (x >= cols) return false;
-  if (y >= rows) return false;
+  if (x >= cols || x < 0) return false;
+  if (y >= rows || y < 0) return false;
   return tiles[y][x] == Map::OIL;
 }
 
 bool Map::is_water(int x, int y) {
-  if (x >= cols) return false;
-  if (y >= rows) return false;
+  if (x >= cols || x < 0) return false;
+  if (y >= rows || y < 0) return false;
   return tiles[y][x] == Map::WATER;
 }
 
 bool Map::is_land(int x, int y) {
-  if (x >= cols) return false;
-  if (y >= rows) return false;
+  if (x >= cols || x < 0) return false;
+  if (y >= rows || y < 0) return false;
   return tiles[y][x] == Map::LAND;
 }
 
