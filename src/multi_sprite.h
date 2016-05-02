@@ -5,11 +5,11 @@
 class MultiSprite : public Sprite {
   public:
 
-    MultiSprite(Graphics& graphics, const std::string& file, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int cx, unsigned int cy);
+    MultiSprite(Graphics& graphics, const std::string& file, unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int cx);
 
     void draw(Graphics& graphics, unsigned int x, unsigned int y, unsigned int n);
 
   private:
 
-    unsigned int bx, by, cx, cy;
+    unsigned int bx, by, cx;
 };

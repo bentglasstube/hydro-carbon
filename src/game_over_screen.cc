@@ -56,7 +56,7 @@ void GameOverScreen::init(Graphics& graphics) {
   }
 }
 
-bool GameOverScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed) {
+bool GameOverScreen::update(Input& input, Audio& audio, Graphics&, unsigned int elapsed) {
   timer -= elapsed;
 
   if (timer < 0) {

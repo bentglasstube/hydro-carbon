@@ -3,10 +3,10 @@
 MultiSprite::MultiSprite(
     Graphics& graphics, const std::string& file,
     unsigned int x, unsigned int y, unsigned int w, unsigned int h,
-    unsigned int cx, unsigned int cy
+    unsigned int cx
   ) :
   Sprite(graphics, file, x, y, w, h),
-  bx(x), by(y), cx(cx), cy(cy) {}
+  bx(x), by(y), cx(cx) {}
 
 void MultiSprite::draw(Graphics& graphics, unsigned int x, unsigned int y, unsigned int n) {
   rect.x = bx + rect.w * (n % cx);

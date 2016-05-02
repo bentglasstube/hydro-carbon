@@ -10,7 +10,7 @@ void TitleScreen::init(Graphics& graphics) {
   text.reset(new Text(graphics));
 }
 
-bool TitleScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed) {
+bool TitleScreen::update(Input& input, Audio&, Graphics&, unsigned int) {
   return !input.any_pressed();
 }
 

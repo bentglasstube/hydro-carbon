@@ -2,7 +2,7 @@
 
 #include "graphics.h"
 
-Backdrop::Backdrop(Graphics& graphics, const std::string& file) {
+Backdrop::Backdrop(Graphics&, const std::string& file) {
   this->file = file;
 }
 

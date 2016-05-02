@@ -106,7 +106,7 @@ void GameScreen::init(Graphics& graphics) {
   particles = ParticleSet();
 
   text.reset(new Text(graphics));
-  hud.reset(new MultiSprite(graphics, "ui", 0, 0, 16, 16, 4, 3));
+  hud.reset(new MultiSprite(graphics, "ui", 0, 0, 16, 16, 4));
   msg.reset(new Message(graphics));
 
   damage = whales = fish = 0;

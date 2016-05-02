@@ -12,6 +12,5 @@ class Whale : public WaterObject {
     void draw(Graphics& graphics);
 
   private:
-    int show_timer;
     boost::shared_ptr<Sprite> sprite;
 };

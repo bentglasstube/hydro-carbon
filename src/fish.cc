@@ -2,11 +2,6 @@
 
 #include "animated_sprite.h"
 
-namespace {
-  const int show_interval = 10000;
-  const int show_threshold = 1500;
-}
-
 Fish::Fish(Graphics& graphics, unsigned int x, unsigned int y) :
   WaterObject(x, y, 0.1f)
 {

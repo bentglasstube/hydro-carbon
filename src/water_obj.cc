@@ -7,7 +7,7 @@ WaterObject::WaterObject(unsigned int x, unsigned int y, float speed) :
   speed(speed), progress(1.0f),
   facing(WaterObject::LEFT) {}
 
-void WaterObject::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
+void WaterObject::update(boost::shared_ptr<Map>, unsigned int elapsed) {
   if (progress < 1.0f) {
     progress += speed * elapsed / 1000.0f;
 
