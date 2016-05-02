@@ -12,7 +12,7 @@ class Barrel : public WaterObject {
 
     void draw(Graphics& graphics);
 
-    const int value() { return 0; }
+    int value() { return 0; }
 
   private:
 
