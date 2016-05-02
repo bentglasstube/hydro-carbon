@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include "sprite.h"
+#include "graphics.h"
 
-class Text : public Sprite {
+class Text {
 
   public:
 
@@ -12,7 +12,7 @@ class Text : public Sprite {
 
     Text(Graphics& graphics);
 
-    void draw(Graphics& graphics, int x, int y, std::string text, Alignment alignment=LEFT);
+    void draw(Graphics& graphics, int x, int y, const std::string& text, Alignment alignment=LEFT);
 
 };
 
