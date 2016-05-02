@@ -14,7 +14,7 @@ class Message {
   public:
     Message(Graphics& graphics);
 
-    void update(unsigned int elapsed);
+    void update(int elapsed);
     void draw(Graphics& graphics);
 
     void show(std::string text);

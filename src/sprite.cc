@@ -2,7 +2,7 @@
 
 #include "graphics.h"
 
-Sprite::Sprite(Graphics& graphics, const std::string& file, unsigned int x, unsigned int y, unsigned int w, unsigned int h) {
+Sprite::Sprite(Graphics& graphics, const std::string& file, int x, int y, int w, int h) {
   this->file = file;
 
   rect.x = x;
@@ -14,7 +14,7 @@ Sprite::Sprite(Graphics& graphics, const std::string& file, unsigned int x, unsi
   graphics.load_image(file, true);
 }
 
-void Sprite::draw(Graphics& graphics, unsigned int x, unsigned int y) {
+void Sprite::draw(Graphics& graphics, int x, int y) {
   SDL_Rect dest;
 
   dest.x = x;

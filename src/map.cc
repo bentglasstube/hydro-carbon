@@ -78,11 +78,11 @@ void Map::draw(Graphics& graphics) {
   }
 }
 
-unsigned int Map::update(unsigned int elapsed) {
+int Map::update(int elapsed) {
   return spread_oil(elapsed);
 }
 
-unsigned int Map::dump_oil(unsigned int x, unsigned int y) {
+int Map::dump_oil(int x, int y) {
   if (x >= cols) return 0;
   if (y >= rows) return 0;
 
@@ -94,39 +94,39 @@ unsigned int Map::dump_oil(unsigned int x, unsigned int y) {
   }
 }
 
-void Map::clean(unsigned int x, unsigned int y) {
+void Map::clean(int x, int y) {
   if (x >= cols) return;
   if (y >= rows) return;
 
   if (tiles[y][x] == Map::OIL) tiles[y][x] = Map::WATER;
 }
 
-bool Map::sailable(unsigned int x, unsigned int y) {
+bool Map::sailable(int x, int y) {
   if (x >= cols) return false;
   if (y >= rows) return false;
   return tiles[y][x] != Map::LAND;
 }
 
-bool Map::is_oil(unsigned int x, unsigned int y) {
+bool Map::is_oil(int x, int y) {
   if (x >= cols) return false;
   if (y >= rows) return false;
   return tiles[y][x] == Map::OIL;
 }
 
-bool Map::is_water(unsigned int x, unsigned int y) {
+bool Map::is_water(int x, int y) {
   if (x >= cols) return false;
   if (y >= rows) return false;
   return tiles[y][x] == Map::WATER;
 }
 
-bool Map::is_land(unsigned int x, unsigned int y) {
+bool Map::is_land(int x, int y) {
   if (x >= cols) return false;
   if (y >= rows) return false;
   return tiles[y][x] == Map::LAND;
 }
 
-unsigned int Map::spread_oil(unsigned int elapsed) {
-  unsigned int score = 0;
+int Map::spread_oil(int elapsed) {
+  int score = 0;
 
   for (int y = 0; y < rows; ++y) {
     for (int x = 0; x < cols; ++x) {

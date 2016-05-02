@@ -12,7 +12,7 @@ class Text : public Sprite {
 
     Text(Graphics& graphics);
 
-    void draw(Graphics& graphics, unsigned int x, unsigned int y, std::string text, Alignment alignment=LEFT);
+    void draw(Graphics& graphics, int x, int y, std::string text, Alignment alignment=LEFT);
 
 };
 

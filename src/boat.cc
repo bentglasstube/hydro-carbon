@@ -7,7 +7,7 @@ namespace {
   const float clean_time = 1000.0f;
 }
 
-Boat::Boat(Graphics& graphics, unsigned int x, unsigned int y, Direction dir) :
+Boat::Boat(Graphics& graphics, int x, int y, Direction dir) :
   WaterObject(x, y, 2.0f), cleaning_progress(0.0f)
 {
   facing = dir;
@@ -18,7 +18,7 @@ Boat::Boat(Graphics& graphics, unsigned int x, unsigned int y, Direction dir) :
   sprites[DOWN]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 48,  0, 16, 16));
 }
 
-void Boat::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
+void Boat::update(boost::shared_ptr<Map> map, int elapsed) {
   WaterObject::update(map, elapsed);
 
   if (is_moving()) return;
@@ -50,8 +50,8 @@ void Boat::draw(Graphics& graphics) {
   sprites[facing]->draw(graphics, dx, dy);
 }
 
-static inline bool __check_oil(boost::shared_ptr<Map> map, unsigned int x, unsigned int y, Boat::Direction d) {
-  unsigned int dx = x, dy = y;
+static inline bool __check_oil(boost::shared_ptr<Map> map, int x, int y, Boat::Direction d) {
+  int dx = x, dy = y;
   switch (d) {
     case Boat::LEFT:  dx--; break;
     case Boat::RIGHT: dx++; break;

@@ -7,8 +7,8 @@ class Graphics;
 
 class Fish : public WaterObject {
   public:
-    Fish(Graphics& graphics, unsigned int x, unsigned int y);
-    void update(boost::shared_ptr<Map> map, unsigned int elapsed);
+    Fish(Graphics& graphics, int x, int y);
+    void update(boost::shared_ptr<Map> map, int elapsed);
     void draw(Graphics& graphics);
 
   private:

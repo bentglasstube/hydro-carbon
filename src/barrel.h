@@ -8,7 +8,7 @@ class Graphics;
 class Barrel : public WaterObject {
   public:
 
-    Barrel(Graphics& graphics, unsigned int x, unsigned int y);
+    Barrel(Graphics& graphics, int x, int y);
 
     void draw(Graphics& graphics);
 

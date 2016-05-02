@@ -2,12 +2,12 @@
 
 #include "graphics.h"
 
-WaterObject::WaterObject(unsigned int x, unsigned int y, float speed) :
+WaterObject::WaterObject(int x, int y, float speed) :
   x(x), y(y),
   speed(speed), progress(1.0f),
   facing(WaterObject::LEFT) {}
 
-void WaterObject::update(boost::shared_ptr<Map>, unsigned int elapsed) {
+void WaterObject::update(boost::shared_ptr<Map>, int elapsed) {
   if (progress < 1.0f) {
     progress += speed * elapsed / 1000.0f;
 
@@ -31,7 +31,7 @@ void WaterObject::start_moving(Direction dir) {
   facing = dir;
 }
 
-bool WaterObject::is_touching(unsigned int tx, unsigned int ty) {
+bool WaterObject::is_touching(int tx, int ty) {
   if (is_moving() && progress > 0.5f) {
     switch (facing) {
       case LEFT: return x - 1 == tx && y == ty;

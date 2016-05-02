@@ -2,8 +2,8 @@
 
 Text::Text(Graphics &graphics) : Sprite(graphics, "text", 0, 0, 8, 16) {}
 
-void Text::draw(Graphics& graphics, unsigned int x, unsigned int y, std::string text, Text::Alignment alignment) {
-  unsigned int dx = 0, dy = 0;
+void Text::draw(Graphics& graphics, int x, int y, std::string text, Text::Alignment alignment) {
+  int dx = 0, dy = 0;
 
   switch (alignment) {
     case Text::LEFT:

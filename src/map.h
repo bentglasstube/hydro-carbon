@@ -14,23 +14,23 @@ class Map {
 
     Map(Graphics& graphics);
 
-    static const unsigned int rows = 30;
-    static const unsigned int cols = 40;
+    static const int rows = 30;
+    static const int cols = 40;
 
     void draw(Graphics& graphics);
-    unsigned int update(unsigned int elapsed);
+    int update(int elapsed);
 
-    unsigned int dump_oil(unsigned int x, unsigned int y);
-    void clean(unsigned int x, unsigned int y);
+    int dump_oil(int x, int y);
+    void clean(int x, int y);
 
-    bool sailable(unsigned int x, unsigned int y);
-    bool is_oil(unsigned int x, unsigned int y);
-    bool is_water(unsigned int x, unsigned int y);
-    bool is_land(unsigned int x, unsigned int y);
+    bool sailable(int x, int y);
+    bool is_oil(int x, int y);
+    bool is_water(int x, int y);
+    bool is_land(int x, int y);
 
   private:
 
-    unsigned int spread_oil(unsigned int elapsed);
+    int spread_oil(int elapsed);
 
     enum TileType { WATER, OIL, LAND };
     enum EdgeType { NW, N, NE, W, E, SW, S, SE };

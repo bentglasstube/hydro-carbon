@@ -3,7 +3,7 @@
 #include "animated_sprite.h"
 #include "graphics.h"
 
-Police::Police(Graphics& graphics, unsigned int x, unsigned int y, Direction dir, boost::shared_ptr<WaterObject> target) :
+Police::Police(Graphics& graphics, int x, int y, Direction dir, boost::shared_ptr<WaterObject> target) :
   WaterObject(x, y, 3.0f), target(target)
 {
   facing = dir;
@@ -14,7 +14,7 @@ Police::Police(Graphics& graphics, unsigned int x, unsigned int y, Direction dir
   sprites[DOWN]  = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "boats",  0, 80, 16, 16, 4));
 }
 
-void Police::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
+void Police::update(boost::shared_ptr<Map> map, int elapsed) {
   WaterObject::update(map, elapsed);
   if (!is_moving()) move_if_possible(map, next_move());
 }

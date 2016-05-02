@@ -4,7 +4,7 @@
 #include "graphics.h"
 
 namespace {
-  const unsigned int message_duration = 100;
+  const int message_duration = 100;
 }
 
 Message::Message(Graphics& graphics) {
@@ -14,7 +14,7 @@ Message::Message(Graphics& graphics) {
   mouth.reset(new AnimatedSprite(graphics, "message", 0, 128, 32, 16, 5));
 }
 
-void Message::update(unsigned int elapsed) {
+void Message::update(int elapsed) {
   if (timer > 0) {
     timer -= elapsed;
     if (timer <= 0) messages.pop();

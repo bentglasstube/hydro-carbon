@@ -21,13 +21,13 @@ namespace {
   const int spawn_interval = 15000;
   const int smoke_interval = 250;
 
-  const unsigned int hud_barrel = 8;
-  const unsigned int hud_lawyer = 9;
-  const unsigned int hud_celeb = 10;
+  const int hud_barrel = 8;
+  const int hud_lawyer = 9;
+  const int hud_celeb = 10;
 
-  const unsigned int fish_value = 500;
-  const unsigned int whale_value = 1500;
-  const unsigned int boat_value = 1000;
+  const int fish_value = 500;
+  const int whale_value = 1500;
+  const int boat_value = 1000;
 }
 
 std::map<GameScreen::Tips, std::string> GameScreen::tips = {
@@ -118,7 +118,7 @@ void GameScreen::init(Graphics& graphics) {
   msg->show("Press T for a tutorial or space to dismiss this.");
 }
 
-bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed) {
+bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, int elapsed) {
   spawn_timer -= elapsed;
   if (spawn_timer <= 0) {
     spawn_timer += spawn_interval;
@@ -283,7 +283,7 @@ std::string GameScreen::get_music_track() {
 }
 
 void GameScreen::spawn_boat(Graphics& graphics) {
-  unsigned int x, y;
+  int x, y;
   Boat::Direction d;
 
   switch (rand() % 3) {
@@ -313,7 +313,7 @@ void GameScreen::spawn_boat(Graphics& graphics) {
 }
 
 void GameScreen::spawn_police(Graphics& graphics, Audio& audio) {
-  unsigned int x, y;
+  int x, y;
   Police::Direction d;
 
   switch (rand() % 3) {
@@ -344,8 +344,8 @@ void GameScreen::spawn_police(Graphics& graphics, Audio& audio) {
 }
 
 void GameScreen::spawn_whale(Graphics& graphics, Audio& audio) {
-  unsigned int x = rand() % Map::cols;
-  unsigned int y = rand() % (Map::rows - 10) + 10;
+  int x = rand() % Map::cols;
+  int y = rand() % (Map::rows - 10) + 10;
 
   if (map->is_water(x, y)) {
     objects.push_back(boost::shared_ptr<WaterObject>(new Whale(graphics, x, y)));
@@ -355,8 +355,8 @@ void GameScreen::spawn_whale(Graphics& graphics, Audio& audio) {
 }
 
 void GameScreen::spawn_fish(Graphics& graphics, Audio& audio) {
-  unsigned int x = rand() % Map::cols;
-  unsigned int y = rand() % (Map::rows - 10) + 10;
+  int x = rand() % Map::cols;
+  int y = rand() % (Map::rows - 10) + 10;
 
   if (map->is_water(x, y)) {
     objects.push_back(boost::shared_ptr<WaterObject>(new Fish(graphics, x, y)));
@@ -366,8 +366,8 @@ void GameScreen::spawn_fish(Graphics& graphics, Audio& audio) {
 }
 
 void GameScreen::spawn_barrel(Graphics& graphics) {
-  unsigned int x = rand() % Map::cols;
-  unsigned int y = rand() % (Map::rows - 10) + 10;
+  int x = rand() % Map::cols;
+  int y = rand() % (Map::rows - 10) + 10;
 
   if (map->sailable(x, y)) {
     objects.push_back(boost::shared_ptr<WaterObject>(new Barrel(graphics, x, y)));
@@ -380,7 +380,7 @@ void GameScreen::add_ghost(Graphics& graphics, Audio& audio, boost::shared_ptr<W
   audio.play_sample("ghost");
 }
 
-void GameScreen::draw_power_up(Graphics& graphics, unsigned int x, unsigned int icon, unsigned int count) {
+void GameScreen::draw_power_up(Graphics& graphics, int x, int icon, int count) {
   if (count > 5) {
     hud->draw(graphics, x, 0, icon);
     text->draw(graphics, x + 16, 0, boost::str(boost::format("x%u") % count));

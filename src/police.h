@@ -13,9 +13,9 @@ class Graphics;
 class Police : public WaterObject {
   public:
 
-    Police(Graphics& graphics, unsigned int x, unsigned int y, Direction dir, boost::shared_ptr<WaterObject> target);
+    Police(Graphics& graphics, int x, int y, Direction dir, boost::shared_ptr<WaterObject> target);
 
-    void update(boost::shared_ptr<Map> map, unsigned int elapsed);
+    void update(boost::shared_ptr<Map> map, int elapsed);
     void draw(Graphics& graphics);
 
   private:

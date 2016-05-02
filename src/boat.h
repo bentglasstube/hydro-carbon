@@ -12,9 +12,9 @@ class Graphics;
 class Boat : public WaterObject {
   public:
 
-    Boat(Graphics& graphics, unsigned int x, unsigned int y, Direction dir);
+    Boat(Graphics& graphics, int x, int y, Direction dir);
 
-    void update(boost::shared_ptr<Map> map, unsigned int elapsed);
+    void update(boost::shared_ptr<Map> map, int elapsed);
     void draw(Graphics& graphics);
 
     bool is_cleaning() { return cleaning_progress > 0.0f; }

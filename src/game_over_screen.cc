@@ -32,7 +32,7 @@ void GameOverScreen::init(Graphics& graphics) {
   if (fd) {
     for (int i = 0; i < 10; ++i) {
       char initials[4];
-      unsigned int score;
+      int score;
 
       fscanf(fd, "%s%u\n", &initials, &score);
 
@@ -56,7 +56,7 @@ void GameOverScreen::init(Graphics& graphics) {
   }
 }
 
-bool GameOverScreen::update(Input& input, Audio& audio, Graphics&, unsigned int elapsed) {
+bool GameOverScreen::update(Input& input, Audio& audio, Graphics&, int elapsed) {
   timer -= elapsed;
 
   if (timer < 0) {
@@ -136,12 +136,12 @@ void GameOverScreen::draw(Graphics& graphics) {
 
   if (phase >= TITLE) text->draw(graphics, 48, 80, "Environmental Impact Report");
 
-  unsigned int y = 112;
+  int y = 112;
 
   if (phase >= KILLS) {
     text->draw(graphics, 48, y, "Animals Killed:");
     y += 16;
-    unsigned int x = 48;
+    int x = 48;
 
     for (int i = 0; i < whales_drawn; ++i) {
       icon_whale->draw(graphics, x, y);
@@ -210,7 +210,7 @@ std::string GameOverScreen::get_music_track() {
   return "";
 }
 
-void GameOverScreen::set_scores(unsigned int total_damage, unsigned int whales_killed, unsigned int fish_killed) {
+void GameOverScreen::set_scores(int total_damage, int whales_killed, int fish_killed) {
   damage = total_damage;
   whales = whales_killed;
   fish = fish_killed;

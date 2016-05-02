@@ -1,8 +1,8 @@
 #include "particle.h"
 
-Particle::Particle(unsigned int x, unsigned int y, unsigned int duration) : x(x), y(y), timer(duration) {}
+Particle::Particle(int x, int y, int duration) : x(x), y(y), timer(duration) {}
 
-bool Particle::update(unsigned int elapsed) {
+bool Particle::update(int elapsed) {
   timer -= elapsed;
   return (timer > 0);
 }

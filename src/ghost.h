@@ -8,9 +8,9 @@
 class Ghost : public Particle {
   public:
 
-    Ghost(Graphics& graphics, unsigned int x, unsigned int y);
+    Ghost(Graphics& graphics, int x, int y);
     void draw(Graphics& graphics);
-    bool update(unsigned int elapsed);
+    bool update(int elapsed);
 
   private:
     float dy;

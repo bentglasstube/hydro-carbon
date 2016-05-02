@@ -8,7 +8,7 @@
 class Smoke : public Particle {
   public:
 
-    Smoke(Graphics& graphics, unsigned int x, unsigned int y, bool dark);
+    Smoke(Graphics& graphics, int x, int y, bool dark);
     void draw(Graphics& graphics);
 
   private:

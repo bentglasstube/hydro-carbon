@@ -10,7 +10,7 @@ class TitleScreen : public Screen {
   public:
 
     void init(Graphics& graphics);
-    bool update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed);
+    bool update(Input& input, Audio& audio, Graphics& graphics, int elapsed);
     void draw(Graphics& graphics);
 
     Screen* next_screen();

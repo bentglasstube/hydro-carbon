@@ -13,13 +13,13 @@ class GameOverScreen : public Screen {
   public:
 
     void init(Graphics& graphics);
-    bool update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed);
+    bool update(Input& input, Audio& audio, Graphics& graphics, int elapsed);
     void draw(Graphics& graphics);
 
     Screen* next_screen();
     std::string get_music_track();
 
-    void set_scores(unsigned int total_damage, unsigned int whales_killed, unsigned int fish_killed);
+    void set_scores(int total_damage, int whales_killed, int fish_killed);
 
   private:
 
@@ -28,17 +28,17 @@ class GameOverScreen : public Screen {
 
     struct HighScore {
       char         initials[3];
-      unsigned int score;
+      int score;
     };
 
     void next_phase(Audio& audio);
 
     Choice choice;
     Phase phase;
-    unsigned int damage, whales, fish;
-    unsigned int whales_drawn, fish_drawn;
+    int damage, whales, fish;
+    int whales_drawn, fish_drawn;
 
-    unsigned int place, initials_pos;
+    int place, initials_pos;
 
     int timer;
     HighScore top_scores[10];

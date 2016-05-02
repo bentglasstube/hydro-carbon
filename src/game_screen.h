@@ -17,7 +17,7 @@ class GameScreen : public Screen {
   public:
 
     void init(Graphics& graphics);
-    bool update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed);
+    bool update(Input& input, Audio& audio, Graphics& graphics, int elapsed);
     void draw(Graphics& graphics);
 
     Screen* next_screen();
@@ -39,7 +39,7 @@ class GameScreen : public Screen {
 
     void add_ghost(Graphics& graphics, Audio& audio, boost::shared_ptr<WaterObject> obj);
 
-    void draw_power_up(Graphics& graphics, unsigned int x, unsigned int icon, unsigned int count);
+    void draw_power_up(Graphics& graphics, int x, int icon, int count);
     void maybe_show_message(Tips tip);
 
     typedef std::vector<boost::shared_ptr<WaterObject>> ObjectSet;
@@ -54,7 +54,7 @@ class GameScreen : public Screen {
     boost::shared_ptr<MultiSprite> hud;
     boost::shared_ptr<Message> msg;
 
-    unsigned int damage, whales, fish;
+    int damage, whales, fish;
     int pr, spawn_timer, smoke_timer;
 
     std::map<Tips, bool> shown;

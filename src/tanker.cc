@@ -12,7 +12,7 @@ namespace {
   const float boost_speed_factor = 3.00f;
 }
 
-Tanker::Tanker(Graphics& graphics, unsigned int x, unsigned int y) :
+Tanker::Tanker(Graphics& graphics, int x, int y) :
   WaterObject(x, y, 1.0f),
   barrels(5), lawyers(0), celebs(0),
   leak_timer(0), boost_timer(0)
@@ -25,7 +25,7 @@ Tanker::Tanker(Graphics& graphics, unsigned int x, unsigned int y) :
   sprites[DOWN]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 16, 0, 16, 32));
 }
 
-void Tanker::update(boost::shared_ptr<Map> map, unsigned int elapsed) {
+void Tanker::update(boost::shared_ptr<Map> map, int elapsed) {
   WaterObject::update(map, elapsed);
 
   if (leak_timer > 0) {
@@ -82,7 +82,7 @@ void Tanker::boost(Audio& audio) {
   }
 }
 
-unsigned int Tanker::x_smoke() {
+int Tanker::x_smoke() {
   switch (facing) {
     case LEFT:  return x_draw() + 24;
     case RIGHT: return x_draw() - 8;
@@ -90,7 +90,7 @@ unsigned int Tanker::x_smoke() {
   }
 }
 
-unsigned int Tanker::y_smoke() {
+int Tanker::y_smoke() {
   switch (facing) {
     case UP:   return y_draw() + 24;
     case DOWN: return y_draw() - 8;
@@ -98,7 +98,7 @@ unsigned int Tanker::y_smoke() {
   }
 }
 
-unsigned int Tanker::x_draw() {
+int Tanker::x_draw() {
   switch (facing) {
     case LEFT:  return 16 * (x - (is_moving() ? progress : 0)) - 8;
     case RIGHT: return 16 * (x + (is_moving() ? progress : 0)) - 8;
@@ -106,7 +106,7 @@ unsigned int Tanker::x_draw() {
   }
 }
 
-unsigned int Tanker::y_draw() {
+int Tanker::y_draw() {
   switch (facing) {
     case UP:   return 16 * (y - (is_moving() ? progress : 0)) - 8;
     case DOWN: return 16 * (y + (is_moving() ? progress : 0)) - 8;
