@@ -12,6 +12,7 @@ class WaterObject {
     enum Direction { UP, LEFT, DOWN, RIGHT };
 
     WaterObject(int x, int y, float speed);
+    virtual ~WaterObject() {}
 
     virtual void update(std::shared_ptr<Map> map, int elapsed);
     virtual void draw(Graphics& graphics) = 0;

@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "audio.h"
-#include "graphics.h"
 #include "input.h"
 #include "text.h"
 #include "title_screen.h"
@@ -25,45 +23,49 @@ Game::~Game() {
   SDL_Quit();
 }
 
-void Game::loop() {
-  Graphics graphics;
-  Audio audio;
-  Input input;
-
+void Game::start() {
   Text text(graphics);
 
-  int last_update = SDL_GetTicks();
+  last_update = SDL_GetTicks();
 
   screen.reset(new TitleScreen());
   screen->init(graphics);
+}
 
+void Game::step() {
+  Input input;
+  const int start = SDL_GetTicks();
+
+  // Start music if it's not playing
+  if (Mix_PlayingMusic() == 0) audio.play_music(screen->get_music_track());
+
+  if (!screen->process_input(input)) return;
+
+  int now = SDL_GetTicks();
+  if (screen->update(input, audio, graphics, now - last_update)) {
+
+    graphics.clear();
+    screen->draw(graphics);
+    graphics.flip();
+
+  } else {
+
+    screen.reset(screen->next_screen());
+    if (!screen) return;
+    screen->init(graphics);
+
+    audio.stop_music();
+  }
+
+  last_update = now;
+
+  const int elapsed = SDL_GetTicks() - start;
+  if (MSPF > elapsed) SDL_Delay(MSPF - elapsed);
+}
+
+void Game::loop() {
+  start();
   while (true) {
-    const int start = SDL_GetTicks();
-
-    // Start music if it's not playing
-    if (Mix_PlayingMusic() == 0) audio.play_music(screen->get_music_track());
-
-    if (!screen->process_input(input)) return;
-
-    int now = SDL_GetTicks();
-    if (screen->update(input, audio, graphics, now - last_update)) {
-
-      graphics.clear();
-      screen->draw(graphics);
-      graphics.flip();
-
-    } else {
-
-      screen.reset(screen->next_screen());
-      if (!screen) return;
-      screen->init(graphics);
-
-      audio.stop_music();
-    }
-
-    last_update = now;
-
-    const int elapsed = SDL_GetTicks() - start;
-    if (MSPF > elapsed) SDL_Delay(MSPF - elapsed);
+    step();
   }
 }
