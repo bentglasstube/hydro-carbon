@@ -34,7 +34,7 @@ void GameOverScreen::init(Graphics& graphics) {
       char initials[4];
       int score;
 
-      int count = fscanf(fd, "%3s%u\n", initials, &score);
+      int count = fscanf(fd, "%3s%d\n", initials, &score);
       if (count < 2) break;
 
       if (damage > score && place > 10) {
@@ -204,6 +204,7 @@ Screen* GameOverScreen::next_screen() {
     case REPLAY: return new GameScreen();
     case MENU: return new TitleScreen();
     case QUIT: return NULL;
+    default: return NULL;
   }
 }
 

@@ -283,8 +283,8 @@ std::string GameScreen::get_music_track() {
 }
 
 void GameScreen::spawn_boat(Graphics& graphics) {
-  int x, y;
-  Boat::Direction d;
+  int x = 0, y =0;
+  Boat::Direction d = Boat::DOWN;
 
   switch (rand() % 3) {
     case 0:
@@ -313,8 +313,8 @@ void GameScreen::spawn_boat(Graphics& graphics) {
 }
 
 void GameScreen::spawn_police(Graphics& graphics, Audio& audio) {
-  int x, y;
-  Police::Direction d;
+  int x = 0, y = 0;
+  Police::Direction d = Police::DOWN;
 
   switch (rand() % 3) {
     case 0:

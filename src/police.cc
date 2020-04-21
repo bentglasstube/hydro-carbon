@@ -52,5 +52,8 @@ Police::Direction Police::next_move() {
     case DOWN:
       if (target->y_pos() > y) return DOWN;
       return target->x_pos() < x ? LEFT : RIGHT;
+
+    default:
+      return DOWN;
   }
 }
