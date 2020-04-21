@@ -1,6 +1,5 @@
 #include "game_screen.h"
 
-#include <boost/format.hpp>
 
 #include "animated_sprite.h"
 #include "audio.h"
@@ -14,7 +13,15 @@
 #include "smoke.h"
 #include "whale.h"
 
-#define ISA(obj, type) boost::dynamic_pointer_cast<type>(obj)
+#define ISA(obj, type) std::dynamic_pointer_cast<type>(obj)
+
+template<typename... Args>
+std::string format(const std::string& format, Args... args) {
+  size_t size = std::snprintf(nullptr, 0, format.c_str(), args...) + 1;
+  std::unique_ptr<char[]> buf(new char[size]);
+  std::snprintf(buf.get(), size, format.c_str(), args...);
+  return std::string(buf.get(), buf.get() + size - 1);
+}
 
 namespace {
   const int starting_pr = 63999;
@@ -168,7 +175,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, int elap
 
   ObjectSet::iterator i = objects.begin();
   while (i != objects.end()) {
-    boost::shared_ptr<WaterObject> obj = *i;
+    std::shared_ptr<WaterObject> obj = *i;
     obj->update(map, elapsed);
 
     bool erase = false;
@@ -236,7 +243,7 @@ bool GameScreen::update(Input& input, Audio& audio, Graphics& graphics, int elap
 
   smoke_timer -= elapsed * (tanker->is_boosting() ? 2 : 1);
   if (smoke_timer < 0) {
-    particles.push_back(boost::shared_ptr<Particle>(new Smoke(graphics, tanker->x_smoke(), tanker->y_smoke(), tanker->is_boosting())));
+    particles.push_back(std::shared_ptr<Particle>(new Smoke(graphics, tanker->x_smoke(), tanker->y_smoke(), tanker->is_boosting())));
     smoke_timer += smoke_interval;
   }
 
@@ -262,7 +269,7 @@ void GameScreen::draw(Graphics& graphics) {
   draw_power_up(graphics, 112, hud_lawyer, tanker->lawyer_count());
   draw_power_up(graphics, 208, hud_celeb, tanker->celeb_count());
 
-  text->draw(graphics, 608, 0, boost::str(boost::format("Damage $% 9u") % damage), Text::RIGHT);
+  text->draw(graphics, 608, 0, format("Damage $% 9u", damage), Text::RIGHT);
 
   int n = 7 - pr / 8000;
   if (n < 0) n = 0;
@@ -308,7 +315,7 @@ void GameScreen::spawn_boat(Graphics& graphics) {
       break;
   }
 
-  objects.push_back(boost::shared_ptr<WaterObject>(new Boat(graphics, x, y, d)));
+  objects.push_back(std::shared_ptr<WaterObject>(new Boat(graphics, x, y, d)));
   maybe_show_message(BOAT);
 }
 
@@ -338,7 +345,7 @@ void GameScreen::spawn_police(Graphics& graphics, Audio& audio) {
       break;
   }
 
-  objects.push_back(boost::shared_ptr<WaterObject>(new Police(graphics, x, y, d, tanker)));
+  objects.push_back(std::shared_ptr<WaterObject>(new Police(graphics, x, y, d, tanker)));
   maybe_show_message(POLICE);
   audio.play_sample("police");
 }
@@ -348,7 +355,7 @@ void GameScreen::spawn_whale(Graphics& graphics, Audio& audio) {
   int y = rand() % (Map::rows - 10) + 10;
 
   if (map->is_water(x, y)) {
-    objects.push_back(boost::shared_ptr<WaterObject>(new Whale(graphics, x, y)));
+    objects.push_back(std::shared_ptr<WaterObject>(new Whale(graphics, x, y)));
     maybe_show_message(WHALE);
     audio.play_sample("whale");
   }
@@ -359,7 +366,7 @@ void GameScreen::spawn_fish(Graphics& graphics, Audio& audio) {
   int y = rand() % (Map::rows - 10) + 10;
 
   if (map->is_water(x, y)) {
-    objects.push_back(boost::shared_ptr<WaterObject>(new Fish(graphics, x, y)));
+    objects.push_back(std::shared_ptr<WaterObject>(new Fish(graphics, x, y)));
     maybe_show_message(FISH);
     audio.play_sample("gulls");
   }
@@ -370,20 +377,20 @@ void GameScreen::spawn_barrel(Graphics& graphics) {
   int y = rand() % (Map::rows - 10) + 10;
 
   if (map->sailable(x, y)) {
-    objects.push_back(boost::shared_ptr<WaterObject>(new Barrel(graphics, x, y)));
+    objects.push_back(std::shared_ptr<WaterObject>(new Barrel(graphics, x, y)));
     maybe_show_message(OIL);
   }
 }
 
-void GameScreen::add_ghost(Graphics& graphics, Audio& audio, boost::shared_ptr<WaterObject> obj) {
-  particles.push_back(boost::shared_ptr<Particle>(new Ghost(graphics, 16 * obj->x_pos(), 16 * obj->y_pos())));
+void GameScreen::add_ghost(Graphics& graphics, Audio& audio, std::shared_ptr<WaterObject> obj) {
+  particles.push_back(std::shared_ptr<Particle>(new Ghost(graphics, 16 * obj->x_pos(), 16 * obj->y_pos())));
   audio.play_sample("ghost");
 }
 
 void GameScreen::draw_power_up(Graphics& graphics, int x, int icon, int count) {
   if (count > 5) {
     hud->draw(graphics, x, 0, icon);
-    text->draw(graphics, x + 16, 0, boost::str(boost::format("x%u") % count));
+    text->draw(graphics, x + 16, 0, "x" + std::to_string(count));
   } else {
     for (int i = 0; i < count; i++) hud->draw(graphics, x + 16 * i, 0, icon);
   }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "map.h"
 
@@ -13,7 +13,7 @@ class WaterObject {
 
     WaterObject(int x, int y, float speed);
 
-    virtual void update(boost::shared_ptr<Map> map, int elapsed);
+    virtual void update(std::shared_ptr<Map> map, int elapsed);
     virtual void draw(Graphics& graphics) = 0;
     virtual void start_moving(Direction dir);
 
@@ -25,7 +25,7 @@ class WaterObject {
 
   protected:
 
-    void move_if_possible(boost::shared_ptr<Map> map, Direction dir);
+    void move_if_possible(std::shared_ptr<Map> map, Direction dir);
 
     int x, y;
     float speed, progress;

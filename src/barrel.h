@@ -16,5 +16,5 @@ class Barrel : public WaterObject {
 
   private:
 
-    boost::shared_ptr<Sprite> sprite;
+    std::shared_ptr<Sprite> sprite;
 };

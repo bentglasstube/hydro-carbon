@@ -19,13 +19,13 @@ Tanker::Tanker(Graphics& graphics, int x, int y) :
 {
   facing = RIGHT;
 
-  sprites[LEFT]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 48, 32, 16));
-  sprites[RIGHT] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 32, 32, 16));
-  sprites[UP]    = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 0, 16, 32));
-  sprites[DOWN]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 16, 0, 16, 32));
+  sprites[LEFT]  = std::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 48, 32, 16));
+  sprites[RIGHT] = std::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 32, 32, 16));
+  sprites[UP]    = std::shared_ptr<Sprite>(new Sprite(graphics, "boats", 0, 0, 16, 32));
+  sprites[DOWN]  = std::shared_ptr<Sprite>(new Sprite(graphics, "boats", 16, 0, 16, 32));
 }
 
-void Tanker::update(boost::shared_ptr<Map> map, int elapsed) {
+void Tanker::update(std::shared_ptr<Map> map, int elapsed) {
   WaterObject::update(map, elapsed);
 
   if (leak_timer > 0) {

@@ -12,13 +12,13 @@ Boat::Boat(Graphics& graphics, int x, int y, Direction dir) :
 {
   facing = dir;
 
-  sprites[LEFT]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 48, 16, 16, 16));
-  sprites[RIGHT] = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 32, 16, 16, 16));
-  sprites[UP]    = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 32,  0, 16, 16));
-  sprites[DOWN]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "boats", 48,  0, 16, 16));
+  sprites[LEFT]  = std::shared_ptr<Sprite>(new Sprite(graphics, "boats", 48, 16, 16, 16));
+  sprites[RIGHT] = std::shared_ptr<Sprite>(new Sprite(graphics, "boats", 32, 16, 16, 16));
+  sprites[UP]    = std::shared_ptr<Sprite>(new Sprite(graphics, "boats", 32,  0, 16, 16));
+  sprites[DOWN]  = std::shared_ptr<Sprite>(new Sprite(graphics, "boats", 48,  0, 16, 16));
 }
 
-void Boat::update(boost::shared_ptr<Map> map, int elapsed) {
+void Boat::update(std::shared_ptr<Map> map, int elapsed) {
   WaterObject::update(map, elapsed);
 
   if (is_moving()) return;
@@ -50,7 +50,7 @@ void Boat::draw(Graphics& graphics) {
   sprites[facing]->draw(graphics, dx, dy);
 }
 
-static inline bool __check_oil(boost::shared_ptr<Map> map, int x, int y, Boat::Direction d) {
+static inline bool __check_oil(std::shared_ptr<Map> map, int x, int y, Boat::Direction d) {
   int dx = x, dy = y;
   switch (d) {
     case Boat::LEFT:  dx--; break;
@@ -61,7 +61,7 @@ static inline bool __check_oil(boost::shared_ptr<Map> map, int x, int y, Boat::D
   return map->is_oil(dx, dy);
 }
 
-Boat::Direction Boat::next_move(boost::shared_ptr<Map> map) {
+Boat::Direction Boat::next_move(std::shared_ptr<Map> map) {
   Direction left  = static_cast<Direction>((facing + 3) % 4);
   Direction right = static_cast<Direction>((facing + 1) % 4);
 

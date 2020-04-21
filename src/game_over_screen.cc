@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <boost/format.hpp>
-
 #include "audio.h"
 #include "input.h"
 #include "game_screen.h"
@@ -13,6 +11,14 @@
 
 namespace {
   const int interval = 250;
+}
+
+template<typename... Args>
+std::string format(const std::string& format, Args... args) {
+  size_t size = std::snprintf(nullptr, 0, format.c_str(), args...) + 1;
+  std::unique_ptr<char[]> buf(new char[size]);
+  std::snprintf(buf.get(), size, format.c_str(), args...);
+  return std::string(buf.get(), buf.get() + size - 1);
 }
 
 void GameOverScreen::init(Graphics& graphics) {
@@ -168,16 +174,15 @@ void GameOverScreen::draw(Graphics& graphics) {
   }
 
   if (phase >= DAMAGE) {
-    text->draw(graphics, 48, y, boost::str(boost::format("Total Damage: $% 9u") % damage));
+    text->draw(graphics, 48, y, format("Total Damage: $% 9u", damage));
     y += 32;
   }
 
   if (phase >= SCORES) {
     text->draw(graphics, 48, y, "Most Wanted:");
     for (int i = 0; i < 5; ++i) {
-      text->draw(graphics,  48, y + 16 * i + 16, boost::str(boost::format("%2u. %3s   $%9u") % (i + 1) % top_scores[i].initials % top_scores[i].score));
-      text->draw(graphics, 320, y + 16 * i + 16, boost::str(boost::format("%2u. %3s   $%9u") % (i + 6) % top_scores[i + 5].initials % top_scores[i + 5].score));
-
+      text->draw(graphics,  48, y + 16 * i + 16, format("%2u. %3s   $%9u", i + 1, top_scores[i].initials, top_scores[i].score));
+      text->draw(graphics, 320, y + 16 * i + 16, format("%2u. %3s   $%9u", i + 6, top_scores[i + 5].initials, top_scores[i + 5].score));
     }
 
     y += 112;

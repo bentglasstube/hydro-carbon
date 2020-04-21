@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "backdrop.h"
 #include "screen.h"
@@ -43,7 +43,7 @@ class GameOverScreen : public Screen {
     int timer;
     HighScore top_scores[10];
 
-    boost::shared_ptr<Backdrop> backdrop;
-    boost::shared_ptr<Text> text;
-    boost::shared_ptr<Sprite> icon_whale, icon_fish;
+    std::shared_ptr<Backdrop> backdrop;
+    std::shared_ptr<Text> text;
+    std::shared_ptr<Sprite> icon_whale, icon_fish;
 };

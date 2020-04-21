@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "sprite.h"
 #include "water_obj.h"
@@ -15,7 +15,7 @@ class Tanker : public WaterObject {
 
     Tanker(Graphics& graphics, int x, int y);
 
-    void update(boost::shared_ptr<Map> map, int elapsed);
+    void update(std::shared_ptr<Map> map, int elapsed);
     void draw(Graphics& graphics);
 
     void start_moving(Direction dir);
@@ -40,7 +40,7 @@ class Tanker : public WaterObject {
 
     int barrels, lawyers, celebs;
     int leak_timer, boost_timer;
-    std::map<Direction, boost::shared_ptr<Sprite>> sprites;
+    std::map<Direction, std::shared_ptr<Sprite>> sprites;
 
     int x_draw();
     int y_draw();

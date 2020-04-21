@@ -3,8 +3,7 @@
 #include <map>
 #include <vector>
 
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class Graphics;
 class Sprite;
@@ -38,7 +37,7 @@ class Map {
 
     std::vector<std::vector<TileType>> tiles;
 
-    std::map<TileType,  boost::shared_ptr<Sprite>> tile_sprites;
-    std::map<EdgeType,  boost::shared_ptr<Sprite>> edge_sprites;
-    std::map<BeachType, boost::shared_ptr<Sprite>> beach_sprites;
+    std::map<TileType,  std::shared_ptr<Sprite>> tile_sprites;
+    std::map<EdgeType,  std::shared_ptr<Sprite>> edge_sprites;
+    std::map<BeachType, std::shared_ptr<Sprite>> beach_sprites;
 };

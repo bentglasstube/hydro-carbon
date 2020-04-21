@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "backdrop.h"
 #include "screen.h"
@@ -18,6 +18,6 @@ class TitleScreen : public Screen {
 
   private:
 
-    boost::scoped_ptr<Backdrop> backdrop;
-    boost::scoped_ptr<Text> text;
+    std::unique_ptr<Backdrop> backdrop;
+    std::unique_ptr<Text> text;
 };

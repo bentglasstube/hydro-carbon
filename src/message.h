@@ -3,7 +3,7 @@
 #include <queue>
 #include <string>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "sprite.h"
 #include "text.h"
@@ -24,7 +24,7 @@ class Message {
 
     int timer;
     std::queue<std::string> messages;
-    boost::shared_ptr<Text> text;
-    boost::shared_ptr<Sprite> box, mouth;
+    std::shared_ptr<Text> text;
+    std::shared_ptr<Sprite> box, mouth;
 
 };

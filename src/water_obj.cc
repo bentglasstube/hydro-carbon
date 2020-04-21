@@ -7,7 +7,7 @@ WaterObject::WaterObject(int x, int y, float speed) :
   speed(speed), progress(1.0f),
   facing(WaterObject::LEFT) {}
 
-void WaterObject::update(boost::shared_ptr<Map>, int elapsed) {
+void WaterObject::update(std::shared_ptr<Map>, int elapsed) {
   if (progress < 1.0f) {
     progress += speed * elapsed / 1000.0f;
 
@@ -44,7 +44,7 @@ bool WaterObject::is_touching(int tx, int ty) {
   return x == tx && y == ty;
 }
 
-void WaterObject::move_if_possible(boost::shared_ptr<Map> map, Direction dir) {
+void WaterObject::move_if_possible(std::shared_ptr<Map> map, Direction dir) {
   switch (dir) {
     case LEFT:  if (map->sailable(x - 1, y)) start_moving(LEFT);  break;
     case RIGHT: if (map->sailable(x + 1, y)) start_moving(RIGHT); break;

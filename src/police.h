@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "map.h"
 #include "sprite.h"
@@ -13,15 +13,15 @@ class Graphics;
 class Police : public WaterObject {
   public:
 
-    Police(Graphics& graphics, int x, int y, Direction dir, boost::shared_ptr<WaterObject> target);
+    Police(Graphics& graphics, int x, int y, Direction dir, std::shared_ptr<WaterObject> target);
 
-    void update(boost::shared_ptr<Map> map, int elapsed);
+    void update(std::shared_ptr<Map> map, int elapsed);
     void draw(Graphics& graphics);
 
   private:
 
     Direction next_move();
 
-    std::map<Direction, boost::shared_ptr<Sprite>> sprites;
-    boost::shared_ptr<WaterObject> target;
+    std::map<Direction, std::shared_ptr<Sprite>> sprites;
+    std::shared_ptr<WaterObject> target;
 };

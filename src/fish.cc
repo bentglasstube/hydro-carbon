@@ -5,10 +5,10 @@
 Fish::Fish(Graphics& graphics, int x, int y) :
   WaterObject(x, y, 0.1f)
 {
-  sprite = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "boats", 32, 48, 16, 16, 4));
+  sprite = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "boats", 32, 48, 16, 16, 4));
 }
 
-void Fish::update(boost::shared_ptr<Map> map, int elapsed) {
+void Fish::update(std::shared_ptr<Map> map, int elapsed) {
   WaterObject::update(map, elapsed);
 
   if (is_moving()) return;

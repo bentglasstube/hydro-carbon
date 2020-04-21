@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "particle.h"
 #include "sprite.h"
@@ -14,5 +14,5 @@ class Ghost : public Particle {
 
   private:
     float dy;
-    boost::shared_ptr<Sprite> sprite;
+    std::shared_ptr<Sprite> sprite;
 };

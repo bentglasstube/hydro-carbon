@@ -4,10 +4,10 @@
 
 Whale::Whale(Graphics& graphics, int x, int y) : WaterObject(x, y, 0.25f) {
   // 90 frames makes the whale only appear 10% of the time
-  sprite = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "boats", 32, 32, 16, 16, 90));
+  sprite = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "boats", 32, 32, 16, 16, 90));
 }
 
-void Whale::update(boost::shared_ptr<Map> map, int elapsed) {
+void Whale::update(std::shared_ptr<Map> map, int elapsed) {
   WaterObject::update(map, elapsed);
 
   if (is_moving()) return;

@@ -5,25 +5,25 @@
 #include "sprite.h"
 
 Map::Map(Graphics& graphics) {
-  tile_sprites[Map::WATER] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0,  0, 16, 16, 8));
-  tile_sprites[Map::OIL]   = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 16, 16, 16, 8));
-  tile_sprites[Map::LAND]  = boost::shared_ptr<Sprite>(new Sprite(graphics, "map", 64, 128, 16, 16));
+  tile_sprites[Map::WATER] = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0,  0, 16, 16, 8));
+  tile_sprites[Map::OIL]   = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 16, 16, 16, 8));
+  tile_sprites[Map::LAND]  = std::shared_ptr<Sprite>(new Sprite(graphics, "map", 64, 128, 16, 16));
 
-  edge_sprites[Map::NW] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 32, 16, 16, 4));
-  edge_sprites[Map::NE] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 48, 16, 16, 4));
-  edge_sprites[Map::SW] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 64, 16, 16, 4));
-  edge_sprites[Map::SE] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 80, 16, 16, 4));
+  edge_sprites[Map::NW] = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 32, 16, 16, 4));
+  edge_sprites[Map::NE] = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 48, 16, 16, 4));
+  edge_sprites[Map::SW] = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 64, 16, 16, 4));
+  edge_sprites[Map::SE] = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 0, 80, 16, 16, 4));
 
-  edge_sprites[Map::N] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 32, 16, 16, 4));
-  edge_sprites[Map::S] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 48, 16, 16, 4));
-  edge_sprites[Map::W] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 64, 16, 16, 4));
-  edge_sprites[Map::E] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 80, 16, 16, 4));
+  edge_sprites[Map::N] = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 32, 16, 16, 4));
+  edge_sprites[Map::S] = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 48, 16, 16, 4));
+  edge_sprites[Map::W] = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 64, 16, 16, 4));
+  edge_sprites[Map::E] = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 80, 16, 16, 4));
 
-  beach_sprites[Map::INNER_LEFT]   = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map",  0,  96, 16, 16, 4));
-  beach_sprites[Map::INNER_RIGHT]  = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64,  96, 16, 16, 4));
-  beach_sprites[Map::OUTER_LEFT]   = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map",  0, 112, 16, 16, 4));
-  beach_sprites[Map::OUTER_RIGHT]  = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 112, 16, 16, 4));
-  beach_sprites[Map::OUTER_MIDDLE] = boost::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map",  0, 128, 16, 16, 4));
+  beach_sprites[Map::INNER_LEFT]   = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map",  0,  96, 16, 16, 4));
+  beach_sprites[Map::INNER_RIGHT]  = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64,  96, 16, 16, 4));
+  beach_sprites[Map::OUTER_LEFT]   = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map",  0, 112, 16, 16, 4));
+  beach_sprites[Map::OUTER_RIGHT]  = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map", 64, 112, 16, 16, 4));
+  beach_sprites[Map::OUTER_MIDDLE] = std::shared_ptr<Sprite>(new AnimatedSprite(graphics, "map",  0, 128, 16, 16, 4));
 
   tiles = std::vector<std::vector<TileType>>(rows, std::vector<TileType>(cols, Map::WATER));
 

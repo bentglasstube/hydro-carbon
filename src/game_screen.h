@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "map.h"
 #include "message.h"
@@ -37,22 +37,22 @@ class GameScreen : public Screen {
     void spawn_fish(Graphics& graphics, Audio& audio);
     void spawn_barrel(Graphics& graphics);
 
-    void add_ghost(Graphics& graphics, Audio& audio, boost::shared_ptr<WaterObject> obj);
+    void add_ghost(Graphics& graphics, Audio& audio, std::shared_ptr<WaterObject> obj);
 
     void draw_power_up(Graphics& graphics, int x, int icon, int count);
     void maybe_show_message(Tips tip);
 
-    typedef std::vector<boost::shared_ptr<WaterObject>> ObjectSet;
-    typedef std::vector<boost::shared_ptr<Particle>> ParticleSet;
+    typedef std::vector<std::shared_ptr<WaterObject>> ObjectSet;
+    typedef std::vector<std::shared_ptr<Particle>> ParticleSet;
 
-    boost::shared_ptr<Map> map;
-    boost::shared_ptr<Tanker> tanker;
+    std::shared_ptr<Map> map;
+    std::shared_ptr<Tanker> tanker;
     ObjectSet objects;
     ParticleSet particles;
 
-    boost::shared_ptr<Text> text;
-    boost::shared_ptr<MultiSprite> hud;
-    boost::shared_ptr<Message> msg;
+    std::shared_ptr<Text> text;
+    std::shared_ptr<MultiSprite> hud;
+    std::shared_ptr<Message> msg;
 
     int damage, whales, fish;
     int pr, spawn_timer, smoke_timer;
