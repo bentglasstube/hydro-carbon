@@ -37,7 +37,10 @@ void Game::step() {
   // Start music if it's not playing
   if (Mix_PlayingMusic() == 0) audio.play_music(screen->get_music_track());
 
-  if (!screen->process_input(input)) return;
+  if (!screen->process_input(input)) {
+    screen.reset();
+    return;
+  }
 
   int now = SDL_GetTicks();
   if (screen->update(input, audio, graphics, now - last_update)) {
@@ -49,8 +52,7 @@ void Game::step() {
   } else {
 
     screen.reset(screen->next_screen());
-    if (!screen) return;
-    screen->init(graphics);
+    if (screen) screen->init(graphics);
 
     audio.stop_music();
   }

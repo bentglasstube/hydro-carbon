@@ -6,13 +6,15 @@ namespace {
 }
 
 Graphics::Graphics() {
-  const int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN_DESKTOP;
+  const int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
   window = SDL_CreateWindow("Ludum Dare 33", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width * 2, height * 2, flags);
   renderer = SDL_CreateRenderer(window, -1, 0);
 
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest"); // retro!
   SDL_RenderSetLogicalSize(renderer, width, height);
+  SDL_RenderSetIntegerScale(renderer, SDL_TRUE);
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 }
 
 Graphics::~Graphics() {
