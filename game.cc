@@ -63,7 +63,7 @@ void Game::step() {
 
 void Game::loop() {
   start();
-  while (true) {
+  while (screen) {
     step();
   }
 }
