@@ -3,7 +3,7 @@ ifeq ($(UNAME), Windows)
 	CROSS=x86_64-w64-mingw32.static-
 endif
 
-SOURCES=$(wildcard src/*.cc) $(wildcard gam/*.cc)
+SOURCES=$(wildcard *.cc)
 CONTENT=$(wildcard content/*.bmp) $(wildcard content/*.ogg) $(wildcard content/*.wav)
 BUILDDIR=$(CROSS)output
 OBJECTS=$(patsubst %.cc,$(BUILDDIR)/%.o,$(SOURCES))
@@ -49,23 +49,11 @@ echo:
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
-video: $(BUILDDIR)/$(NAME).mkv
-
-$(BUILDDIR)/$(NAME).mkv: $(BUILDDIR)/$(NAME).glc $(BUILDDIR)/$(NAME).wav
-	glc-play $< -o - -y 1 |ffmpeg -i - -i $(NAME).wav -acodec flac --vcodec libx264 -y $@
-
-$(BUILDDIR)/$(NAME).wav: $(BUILDDIR)/$(NAME).glc
-	glc-play $< -a 1 -o $@
-
-$(BUILDDIR)/$(NAME).glc: $(EXECUTABLE)
-	glc-capture -pso $@ $(EXECUTABLE)
-
 $(EXECUTABLE): $(OBJECTS) $(EXTRA)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJECTS) $(EXTRA) $(LDLIBS)
 
 $(BUILDDIR)/%.o: %.cc
-	@mkdir -p $(BUILDDIR)/gam
-	@mkdir -p $(BUILDDIR)/src
+	@mkdir -p $(BUILDDIR)/
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 package: $(PACKAGE)
