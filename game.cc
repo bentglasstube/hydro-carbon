@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "input.h"
 #include "text.h"
 #include "title_screen.h"
 #include "screen.h"
@@ -33,7 +32,6 @@ void Game::start() {
 }
 
 void Game::step() {
-  Input input;
   const int start = SDL_GetTicks();
 
   // Start music if it's not playing
