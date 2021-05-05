@@ -8,7 +8,7 @@ namespace {
 Graphics::Graphics() {
   const int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
-  window = SDL_CreateWindow("Ludum Dare 33", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width * 2, height * 2, flags);
+  window = SDL_CreateWindow("Hydro Carbon", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width * 2, height * 2, flags);
   renderer = SDL_CreateRenderer(window, -1, 0);
 
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest"); // retro!
