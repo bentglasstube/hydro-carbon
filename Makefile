@@ -4,7 +4,8 @@ ifeq ($(UNAME), Windows)
 endif
 
 SOURCES=$(wildcard *.cc)
-CONTENT=$(wildcard content/*.bmp) $(wildcard content/*.ogg) $(wildcard content/*.wav)
+CONTENT=$(wildcard content/*)
+ICONS=icon.png
 BUILDDIR=$(CROSS)output
 OBJECTS=$(patsubst %.cc,$(BUILDDIR)/%.o,$(SOURCES))
 NAME=hydro-carbon
@@ -14,8 +15,8 @@ CC=$(CROSS)g++
 LD=$(CROSS)ld
 AR=$(CROSS)ar
 PKG_CONFIG=$(CROSS)pkg-config
-CFLAGS=-O3 --std=c++14 -Wall -Wextra -Werror -pedantic -I gam -DNDEBUG
-EMFLAGS=-s USE_SDL=2 -s USE_SDL_MIXER=2 -s USE_OGG=1 -s USE_VORBIS=1
+CFLAGS=-O3 --std=c++17 -Wall -Wextra -Werror -pedantic -DNDEBUG
+EMFLAGS=-s USE_SDL=2 -s USE_SDL_MIXER=2 -s USE_OGG=1 -s USE_VORBIS=1 -s ALLOW_MEMORY_GROWTH=1 -fno-rtti -fno-exceptions
 EXTRA=
 
 EXECUTABLE=$(BUILDDIR)/$(NAME)
@@ -25,6 +26,7 @@ ifeq ($(UNAME), Windows)
 	LDFLAGS=-static-libstdc++ -static-libgcc
 	LDLIBS=`$(PKG_CONFIG) sdl2 SDL2_mixer SDL2_image --cflags --libs` -Wl,-Bstatic
 	EXECUTABLE=$(BUILDDIR)/$(NAME).exe
+	EXTRA=$(BUILDDIR)/icon.res.o
 endif
 ifeq ($(UNAME), Linux)
 	PACKAGE=$(NAME)-linux-$(VERSION).AppImage
@@ -57,6 +59,15 @@ $(BUILDDIR)/%.o: %.cc
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 package: $(PACKAGE)
+
+$(BUILDDIR)/icon.res.o: $(BUILDDIR)/icon.rc
+	$(CROSS)windres $< -O coff $@
+
+$(BUILDDIR)/icon.rc: $(BUILDDIR)/icon.ico
+	echo "420 ICON $<" > $@
+
+$(BUILDDIR)/icon.ico: $(ICONS)
+	convert $< $@
 
 wasm: $(NAME)-$(VERSION).html
 
@@ -119,4 +130,4 @@ distclean: clean
 	rm -rf *.html *.js *.data *.wasm
 	rm -rf *-web-*/ *output/
 
-.PHONY: all echo clean distclean run package wasm web video
+.PHONY: all echo clean distclean run package wasm web
