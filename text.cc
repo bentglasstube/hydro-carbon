@@ -1,7 +1,7 @@
 #include "text.h"
 
 Text::Text(Graphics &graphics) {
-  graphics.load_image("text", true);
+  graphics.load_image("text");
 }
 
 void Text::draw(Graphics& graphics, int x, int y, const std::string& text, Text::Alignment alignment) {

@@ -7,17 +7,25 @@
 class Graphics {
   public:
 
-    Graphics();
+    Graphics(int width, int height);
     ~Graphics();
 
-    void blit(const std::string& file, SDL_Rect* srect, SDL_Rect* drect);
+    enum FlipDirection { NONE, HORIZONTAL, VERTICAL, BOTH };
+
+    void blit(const std::string& file, const SDL_Rect* srect, const SDL_Rect* drect, FlipDirection flip = NONE);
     void flip();
     void clear();
 
-    SDL_Texture* load_image(const std::string& file, bool transparency=false);
+    void rect(int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b);
+
+    int get_width() { return width; }
+    int get_height() { return height; }
+
+    SDL_Texture* load_image(const std::string& file);
 
   private:
 
+    int width, height;
     typedef std::map<std::string, SDL_Texture*> TextureMap;
     TextureMap textures;
     SDL_Window* window;

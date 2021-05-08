@@ -5,7 +5,7 @@ MultiSprite::MultiSprite(
     int x, int y, int w, int h, int cx
   ) : file(file), bx(x), by(y), cx(cx)
 {
-  graphics.load_image(file, true);
+  graphics.load_image(file);
 
   rect.x = x;
   rect.y = y;

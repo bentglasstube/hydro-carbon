@@ -10,8 +10,7 @@ Sprite::Sprite(Graphics& graphics, const std::string& file, int x, int y, int w,
   rect.w = w;
   rect.h = h;
 
-  // Force transparency enabled
-  graphics.load_image(file, true);
+  graphics.load_image(file);
 }
 
 void Sprite::draw(Graphics& graphics, int x, int y) {

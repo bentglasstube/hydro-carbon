@@ -1,14 +1,9 @@
 #include "graphics.h"
 
-namespace {
-  const int width = 640;
-  const int height = 480;
-}
+Graphics::Graphics(int width, int height) : width(width), height(height) {
+  int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
-Graphics::Graphics() {
-  const int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-
-  window = SDL_CreateWindow("Hydro Carbon", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width * 2, height * 2, flags);
+  window = SDL_CreateWindow("Hydro Carbon", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
   renderer = SDL_CreateRenderer(window, -1, 0);
 
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest"); // retro!
@@ -26,9 +21,24 @@ Graphics::~Graphics() {
   SDL_DestroyWindow(window);
 }
 
-void Graphics::blit(const std::string& file, SDL_Rect* srect, SDL_Rect* drect) {
+void Graphics::blit(const std::string& file, const SDL_Rect* srect, const SDL_Rect* drect, FlipDirection flip) {
+  SDL_RendererFlip f = SDL_FLIP_NONE;
+  switch (flip) {
+    case HORIZONTAL:
+      f = SDL_FLIP_HORIZONTAL;
+      break;
+    case VERTICAL:
+      f = SDL_FLIP_VERTICAL;
+      break;
+    case BOTH:
+      f = (SDL_RendererFlip) (SDL_FLIP_VERTICAL | SDL_FLIP_HORIZONTAL);
+      break;
+    case NONE:
+      f = (SDL_RendererFlip) 0;
+      break;
+  }
   SDL_Texture* texture = load_image(file);
-  SDL_RenderCopy(renderer, texture, srect, drect);
+  SDL_RenderCopyEx(renderer, texture, srect, drect, 0.0f, NULL, f);
 }
 
 void Graphics::flip() {
@@ -40,14 +50,18 @@ void Graphics::clear() {
   SDL_RenderClear(renderer);
 }
 
-SDL_Texture* Graphics::load_image(const std::string& file, bool transparency) {
-  const std::string path("content/" + file + ".bmp");
+void Graphics::rect(int x, int y, int w, int h, Uint8 red, Uint8 green, Uint8 blue) {
+  SDL_Rect r = {x, y, w, h};
+  SDL_SetRenderDrawColor(renderer, red, green, blue, 32);
+  SDL_RenderFillRect(renderer, &r);
+}
+
+SDL_Texture* Graphics::load_image(const std::string& file) {
+  const std::string path("content/" + file+ ".bmp");
   if (textures.count(path) == 0) {
     SDL_Surface* surface = SDL_LoadBMP(path.c_str());
-    if (transparency) {
-      const Uint32 black = SDL_MapRGB(surface->format, 0, 0, 0);
-      SDL_SetColorKey(surface, SDL_TRUE, black);
-    }
+    const Uint32 black = SDL_MapRGB(surface->format, 0, 0, 0);
+    SDL_SetColorKey(surface, SDL_TRUE, black);
 
     textures[path] = SDL_CreateTextureFromSurface(renderer, surface);
   }
