@@ -3,7 +3,7 @@
 Graphics::Graphics(int width, int height) : width(width), height(height) {
   int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
-  window = SDL_CreateWindow("Hydro Carbon", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+  window = SDL_CreateWindow("Hydro Carbon", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width * 2, height * 2, flags);
   renderer = SDL_CreateRenderer(window, -1, 0);
 
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest"); // retro!
